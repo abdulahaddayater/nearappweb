@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Halo — tap phones, pay in NEAR</title>
+<meta name="description" content="Halo is a non-custodial Android wallet for phone-to-phone NFC payments on NEAR testnet. Passkey-protected accounts, merchant NFC stickers, one-time payment requests. Free APK.">
+<meta name="theme-color" content="#00EC97">
+<meta property="og:title" content="Halo — tap phones, pay in NEAR">
+<meta property="og:description" content="Phone-to-phone NFC payments on NEAR testnet. Non-custodial, passkey-ready, ~1 second finality.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<script>
+  document.documentElement.classList.remove('no-js');
+  (function(){var t=localStorage.getItem('halo-theme');if(!t)t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;})();
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.stage[data-s=tap] .st.t2,.stage[data-s=auth] .st.t2,.stage[data-s=send] .st.t2{display:flex}
+.stage[data-s=idle] .st.i,.stage[data-s=leave] .st.i,.stage[data-s=approach] .st.i{display:flex}
+</style>
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-nfc" viewBox="0 0 24 24"><path d="M6 8.5a5.5 5.5 0 0 1 0 7M9.8 6a9 9 0 0 1 0 12M13.6 3.6a12.5 12.5 0 0 1 0 16.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 12.5l8-8m-3 3l2.5 2.5M14 9.5l2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-fp" viewBox="0 0 24 24"><path d="M5 11a7 7 0 0 1 14 0v1.5M8.5 20c.8-1.3 1-2.8 1-4.5V11a2.5 2.5 0 0 1 5 0v4.5c0 1.8.3 3 1 4.2M12 11v5c0 1.8-.5 3.2-1.4 4.5M5 15c0 1.6-.3 2.8-1 4M19 16.5c0 1.2.2 2.2.6 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19c.5-3 2.7-4.8 5.5-4.8s5 1.8 5.5 4.8M16 6.2a3 3 0 0 1 0 5.6M18 14.5c1.6.6 2.7 2 3 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5L4 12z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2.5v2.5H14zM18 14h2v2h-2zM14 18.5h2v1.5h-2zM18 18h2v2h-2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M5 6h14M5 12h14M5 18h9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-shop" viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v1.5a3 3 0 0 1-5.3 1.9A3 3 0 0 1 12 14a3 3 0 0 1-2.7-1.6A3 3 0 0 1 4 10.5V9zM5.5 14v6h13v-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6L13 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 12h2.5l2-5 3 10 3-8 2 3H21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v10M9.5 9.5h4a1.8 1.8 0 0 1 0 3.5h-3a1.8 1.8 0 0 0 0 3.5h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5.5 12.5l4.2 4.2 8.8-9.4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v6M12 7.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.5-3 8-7 9.5-4-1.5-7-5-7-9.5V6l7-3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2.2 2.2L15.5 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Halo home"><span class="mark"></span>Halo</a>
+    <nav class="links" aria-label="Primary">
+      <a href="#demo">Live tap</a><a href="#passkeys">Passkeys</a><a href="#features">Features</a><a href="#security">Security</a><a href="#contract">Contract</a><a href="#faq">FAQ</a>
+    </nav>
+    <button class="theme" id="theme" aria-label="Toggle light / dark theme">
+      <svg class="moon"><use href="#i-moon"/></svg>
+      <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <a class="btn primary sm" href="downloads/halo.apk" download="halo.apk"><svg><use href="#i-down"/></svg>APK</a>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap grid">
+    <div>
+      <span class="pill reveal"><b>TESTNET</b>Built for the NEAR hackathon</span>
+      <h1 class="reveal" style="--d:.05s">Tap phones.<br><em>Pay in NEAR.</em></h1>
+      <p class="lead reveal" style="--d:.12s">Halo turns any NFC Android phone into a payment terminal. Hold two phones together, confirm with your fingerprint or passkey, and NEAR settles in about a second. Non-custodial, human-readable names, no card reader.</p>
+      <div class="cta reveal" style="--d:.2s">
+        <a class="btn primary" id="heroDl" href="downloads/halo.apk" download="halo.apk"><svg><use href="#i-down"/></svg>Download APK <span style="opacity:.6;font-weight:500" data-rel="size_mb_label">6.97 MB</span></a>
+        <a class="btn ghost" href="#demo">Watch a tap</a>
+      </div>
+      <div class="dlmeta reveal" style="--d:.28s">
+        <span><i></i>v<span data-rel="version">1.0.0-hackathon</span></span>
+        <span><i></i>Android 10+ · arm64</span>
+        <span><i></i>NFC + screen lock</span>
+        <span><i></i>Testnet only</span>
+      </div>
+    </div>
+    <div class="hero-visual reveal" style="--d:.15s">
+      <div class="ringbox"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+      <div class="phone"><div class="screen dk">
+        <div class="s-top"><span class="s-mark"></span><span class="s-chip">alice.testnet</span></div>
+        <div class="s-lab">Balance · testnet</div>
+        <div class="s-bal">24.5<small>NEAR</small></div>
+        <div class="s-orb"><div><svg><use href="#i-nfc"/></svg>Tap to pay</div></div>
+        <div class="s-row3"><div class="s-q"><i></i>Receive</div><div class="s-q"><i></i>Send</div><div class="s-q"><i></i>Merchant</div></div>
+        <div style="margin-top:8px">
+          <div class="s-tx"><span class="av in">↙</span><div>cafe.testnet<small>Received · 2 min ago</small></div><b class="g">+0.5</b></div>
+          <div class="s-tx"><span class="av">↗</span><div>bob.testnet<small>Sent · yesterday</small></div><b>−1.2</b></div>
+        </div>
+      </div></div>
+      <div class="float f1"><span class="dot"><svg><use href="#i-check"/></svg></span><div><b>0.5 NEAR paid</b><small>finalised in ~1 s</small></div></div>
+      <div class="float f2"><span class="dot" style="background:var(--fg);color:var(--bg)"><svg><use href="#i-fp"/></svg></span><div><b>Passkey verified</b><small>keys never leave device</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats"><div class="wrap">
+  <div class="row reveal">
+    <div class="stat"><b data-count="1" data-pre="~" data-suf="s">~1s</b><span>typical NEAR finality</span></div>
+    <div class="stat"><b data-count="5" data-suf="min">5min</b><span>one-time request expiry</span></div>
+    <div class="stat"><b data-count="6.97" data-dec="2" data-suf="MB">6.97MB</b><span>whole app, arm64 APK</span></div>
+    <div class="stat"><b data-count="0" data-suf="keys">0keys</b><span>ever leave your phone</span></div>
+  </div>
+</div></div>
+
+<!-- DEMO -->
+<section class="demo" id="demo">
+  <div class="wrap">
+    <div class="demo-head">
+      <div>
+        <span class="eyebrow reveal">Interactive simulation</span>
+        <h2 class="reveal">See the tap,<br><em>step by step.</em></h2>
+        <p class="lead reveal">The receiver's phone emulates a card. The sender's reads it, confirms, signs on-device and broadcasts. Pick an amount and replay.</p>
+      </div>
+      <div class="controls reveal" role="group" aria-label="Demo amount">
+        <button class="amt" data-v="0.1">0.1</button>
+        <button class="amt on" data-v="0.5">0.5</button>
+        <button class="amt" data-v="1">1</button>
+        <button class="amt" data-v="2.5">2.5</button>
+        <button class="replay" id="replay"><svg><use href="#i-replay"/></svg>Replay</button>
+      </div>
+    </div>
+    <div class="stage-outer" id="stageOuter">
+      <div class="stage" id="stage" data-s="idle">
+        <div class="burst"><i></i><i></i><i></i></div>
+        <div class="coin"><span data-amt>0.5</span> NEAR</div>
+        <!-- sender -->
+        <div class="phone" id="pSend"><span class="who">Sender · bob.testnet</span><div class="screen dk buzz">
+          <div class="s-top"><span class="s-mark"></span><span class="s-chip">bob.testnet</span></div>
+          <div class="st i s-center"><div class="s-spacer"></div><div class="s-rings"><i></i><i></i><i></i><svg><use href="#i-nfc"/></svg></div><b style="font-size:15px;letter-spacing:-.02em">Hold near the other phone</b><span class="s-mut" style="margin-top:4px">Back to back, or tap a Halo sticker</span><div class="s-spacer"></div><div class="s-btn ol">Scan QR instead</div></div>
+          <div class="st t">
+            <div class="s-lab s-center">Payment request</div><div class="s-av">A</div><div class="s-center" style="font-weight:550;margin-bottom:8px">alice.testnet</div>
+            <div class="s-spacer"></div>
+            <div class="s-big"><span data-amt>0.5</span> <small>NEAR</small></div>
+            <div class="s-center s-mut" style="margin-top:6px;font-size:10px">NEAR testnet · expires in 5 min</div>
+            <div class="s-spacer"></div>
+            <div class="fp"><svg><use href="#i-fp"/></svg></div>
+            <div class="s-btn gr">Confirm</div>
+          </div>
+          <div class="st sd s-center"><div class="s-spacer"></div><div class="spin"></div><b style="font-size:15px">Sending <span data-amt>0.5</span> NEAR</b><span class="s-mut" style="margin-top:4px;font-size:10.5px">Signed on this phone · finalising</span><div class="s-spacer"></div></div>
+          <div class="st d s-center"><div class="s-spacer"></div><svg class="s-check" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30"/><path d="M22 36l9 9 17-19"/></svg><div class="s-lab" style="margin-top:14px">Paid</div><div class="s-big" style="margin-top:4px"><span data-amt>0.5</span></div><span class="s-mut" style="margin-top:4px">to alice.testnet</span><div class="s-spacer"></div><div class="s-btn ol">View on NearBlocks</div></div>
+        </div></div>
+        <!-- receiver -->
+        <div class="phone" id="pRecv"><span class="who">Receiver · alice.testnet</span><div class="screen">
+          <div class="s-top"><span class="s-mark"></span><span class="s-chip">alice.testnet</span></div>
+          <div class="st i s-center"><div class="s-lab">Requesting</div><div class="s-big" style="margin-top:6px"><span data-amt>0.5</span> <small>NEAR</small></div><div class="s-spacer"></div><div class="s-rings"><i></i><i></i><i></i><svg><use href="#i-nfc"/></svg></div><span class="s-mut">Ask the payer to tap their phone</span><div class="s-spacer"></div><div class="s-btn ol">Show QR</div></div>
+          <div class="st t2 s-center"><div class="s-lab">Requesting</div><div class="s-big" style="margin-top:6px"><span data-amt>0.5</span> <small>NEAR</small></div><div class="s-spacer"></div><div class="s-rings"><i></i><i></i><i></i><svg style="color:var(--g)"><use href="#i-nfc"/></svg></div><b class="g" style="font-size:12px">Tapped — waiting for payment…</b><div class="s-spacer"></div><div class="s-btn ol">Cancel</div></div>
+          <div class="st d s-center"><div class="s-spacer"></div><svg class="s-check" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30"/><path d="M22 36l9 9 17-19"/></svg><div class="s-lab" style="margin-top:14px">Received</div><div class="s-big" style="margin-top:4px"><span data-amt>0.5</span> <small>NEAR</small></div><span class="s-mut" style="margin-top:4px">on alice.testnet</span><div class="s-spacer"></div><div class="s-btn">Done</div></div>
+        </div></div>
+      </div>
+    </div>
+    <div class="timeline" id="timeline" aria-hidden="true">
+      <span data-t="idle">1 · Request</span><span data-t="approach">2 · Approach</span><span data-t="tap">3 · NFC read</span><span data-t="auth">4 · Biometric</span><span data-t="send">5 · Sign &amp; send</span><span data-t="done">6 · Receipt</span>
+    </div>
+    <p class="sim-note">Animated simulation with sample data. On real devices it uses Android Host Card Emulation + reader mode.</p>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section id="how">
+  <div class="wrap">
+    <span class="eyebrow reveal">How it works</span>
+    <h2 class="reveal">Three moves.<br><em>One second.</em></h2>
+    <div class="steps">
+      <div class="step reveal"><h3>Request</h3><p>Receiver types an amount. Their phone starts serving a one-time request: account, amount, token, nonce and a 5-minute expiry.</p>
+        <div class="mini"><div class="s-rings"><i></i><i></i><i></i><svg style="color:var(--fg)"><use href="#i-nfc"/></svg></div></div></div>
+      <div class="step reveal" style="--d:.1s"><h3>Tap</h3><p>Sender holds their phone close. Reader mode selects Halo's AID, reads the payload and shows a clear confirm sheet. Confirm with biometrics or passkey.</p>
+        <div class="mini"><div class="tx">SELECT <b>F048414C4F504159</b><br>← <b>HALO1;alice.testnet;…</b> 90 00</div></div></div>
+      <div class="step reveal" style="--d:.2s"><h3>Settle</h3><p>The transaction is signed on-device and sent to NEAR. The receiver watches the chain and shows a receipt with a NearBlocks link.</p>
+        <div class="mini"><div class="tx">Transfer <b>0.5 NEAR</b><br>bob.testnet → alice.testnet<br><span style="color:var(--g)">✓ executed</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PASSKEYS -->
+<section id="passkeys" style="padding-top:40px">
+  <div class="pk"><div class="wrap" style="padding-top:100px;padding-bottom:100px">
+    <div class="pk-grid">
+      <div>
+        <span class="badge reveal">THE DIFFERENTIATOR</span>
+        <span class="eyebrow reveal" style="display:flex">Bring your own account</span>
+        <h2 class="reveal">Connect any account.<br><em>Guard it with a passkey.</em></h2>
+        <p class="lead reveal">Already have a NEAR testnet account? Import it by secret key or seed phrase, or link a passkey so every payment needs your synced passkey too. No seed phrase living on the phone.</p>
+        <ul class="reveal">
+          <li>Create a new <b>*.testnet</b> account in seconds</li>
+          <li>Import with <b>ed25519 secret key</b> or <b>12/24-word seed phrase</b> (m/44'/397'/0')</li>
+          <li>Link a <b>passkey</b> to an existing account via Android Credential Manager</li>
+          <li>Leave the account id blank — Halo looks it up from your key</li>
+        </ul>
+      </div>
+      <div class="flow reveal" style="--d:.1s">
+        <div class="fstep"><span class="n">1</span><div><b>Prove ownership once</b><small>Paste your key or seed. Halo checks it controls the account on-chain.</small></div></div>
+        <div class="fstep"><span class="n">2</span><div><b>New device key, added on-chain</b><small>Halo generates a fresh key and submits an <code>AddKey</code> transaction signed by your original.</small></div></div>
+        <div class="fstep"><span class="n">3</span><div><b>Passkey registered</b><small>A passkey is created for the account with user verification required.</small></div></div>
+        <div class="fstep"><span class="n">4</span><div><b>Original key is not stored</b><small>Only the device key stays, encrypted by the Keystore. Each payment asks for passkey + biometrics.</small></div></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <span class="eyebrow reveal">Everything in the app</span>
+    <h2 class="reveal">A full wallet,<br><em>not a demo screen.</em></h2>
+    <div class="fgrid">
+      <article class="fc w reveal"><div class="ic"><svg><use href="#i-nfc"/></svg></div><h3>Phone-to-phone NFC tap pay</h3><p>Native Kotlin <code>HostApduService</code> with a custom AID serves the request; the payer's phone reads it with <code>IsoDep</code> reader mode. Payload is under 250 bytes, one short APDU. Handles NFC off and unsupported devices with settings shortcut and QR fallback.</p><div class="tags"><span>HCE</span><span>IsoDep</span><span>AID F048414C4F504159</span><span>NFC off / unsupported handling</span></div></article>
+      <article class="fc reveal" style="--d:.05s"><div class="ic"><svg><use href="#i-bolt"/></svg></div><h3>NEAR testnet, ~1s finality</h3><p>Plain transfers over JSON-RPC with automatic fallback endpoint. Fast enough that the receipt lands while you're still holding the phones.</p></article>
+      <article class="fc reveal"><div class="ic"><svg><use href="#i-users"/></svg></div><h3>Create, import, link</h3><p>New testnet account, secret-key import, seed-phrase import, or passkey linking. Reveal or back up your secret key behind biometrics.</p></article>
+      <article class="fc reveal" style="--d:.05s"><div class="ic"><svg><use href="#i-lock"/></svg></div><h3>Keystore-locked keys</h3><p>Non-custodial. Each key is AES-GCM encrypted by an Android Keystore key that needs fingerprint, face or PIN. Decrypted only in memory to sign.</p></article>
+      <article class="fc reveal" style="--d:.1s"><div class="ic"><svg><use href="#i-key"/></svg></div><h3>Multi-account</h3><p>Hold several accounts on one phone, switch in a tap and remove any of them. Removing deletes the key from the device.</p></article>
+      <article class="fc reveal"><div class="ic"><svg><use href="#i-send"/></svg></div><h3>Send by account name</h3><p>Type <code>bob.testnet</code>, enter an amount on the built-in keypad. Halo checks the account exists before you pay.</p></article>
+      <article class="fc reveal" style="--d:.05s"><div class="ic"><svg><use href="#i-qr"/></svg></div><h3>Receive: NFC + QR</h3><p>Every request is also a QR code. No NFC on one side? Scan instead. Receiver detects payment by watching the chain.</p></article>
+      <article class="fc reveal" style="--d:.1s"><div class="ic"><svg><use href="#i-list"/></svg></div><h3>Activity with NearBlocks</h3><p>Recent transactions from NearBlocks plus on-device history, each row opens the testnet explorer.</p></article>
+      <article class="fc w reveal"><div class="ic"><svg><use href="#i-shop"/></svg></div><h3>Merchant mode with NFC stickers</h3><p>Write a reusable pay-me request (fixed or open amount) to an NTAG213/215/216 sticker. A customer taps the sticker, not your phone, and Halo opens straight to the confirm sheet.</p><div class="tags"><span>NDEF write</span><span>Android Application Record</span><span>No second phone needed</span></div></article>
+      <article class="fc reveal"><div class="ic"><svg><use href="#i-doc"/></svg></div><h3>Optional session contract</h3><p>Rust <code>near-sdk</code> contract: nonce replay protection, expiry, events, native NEAR and NEP-141. App works without it.</p></article>
+      <article class="fc reveal" style="--d:.05s"><div class="ic"><svg><use href="#i-coin"/></svg></div><h3>NEAR + NEP-141 tokens</h3><p>Request native NEAR or fungible tokens such as test USDC via <code>ft_transfer</code> / <code>ft_transfer_call</code>.</p></article>
+      <article class="fc reveal" style="--d:.1s"><div class="ic"><svg><use href="#i-wave"/></svg></div><h3>Haptics &amp; motion</h3><p>Buzz on tap, success and failure. Pulsing NFC rings, a self-drawing check, soft transitions, switchable off.</p></article>
+      <article class="fc reveal"><div class="ic"><svg><use href="#i-moon"/></svg></div><h3>White &amp; black themes</h3><p>System, White or Black, with NEAR green accents. True black for OLED.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="screens" style="padding-bottom:40px">
+  <div class="wrap">
+    <span class="eyebrow reveal">Inside the app</span>
+    <h2 class="reveal">Quiet by design.</h2>
+    <p class="lead reveal">Sample screens drawn for this page, not captured data.</p>
+  </div>
+  <div class="gal-scroll" id="gal">
+    <figure class="gal-item"><div class="phone"><div class="screen dk">
+      <div class="s-top"><span class="s-mark"></span><span class="s-chip">alice.testnet ⚿</span></div>
+      <div class="s-lab">Balance · testnet</div><div class="s-bal">24.5<small>NEAR</small></div>
+      <div class="s-orb"><div><svg><use href="#i-nfc"/></svg>Tap to pay</div></div>
+      <div class="s-row3"><div class="s-q"><i></i>Receive</div><div class="s-q"><i></i>Send</div><div class="s-q"><i></i>Merchant</div></div>
+      <div style="margin-top:8px"><div class="s-tx"><span class="av in">↙</span><div>cafe.testnet<small>Received</small></div><b class="g">+0.5</b></div><div class="s-tx"><span class="av">↗</span><div>bob.testnet<small>Sent</small></div><b>−1.2</b></div></div>
+    </div></div><figcaption><b>Home</b>Balance and the tap orb</figcaption></figure>
+
+    <figure class="gal-item"><div class="phone"><div class="screen">
+      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Pay</b></div>
+      <div class="s-lab s-center">Payment request</div><div class="s-av">C</div><div class="s-center" style="font-weight:550">cafe.testnet</div>
+      <div class="s-spacer"></div><div class="s-big">0.5 <small>NEAR</small></div><div class="s-center s-mut" style="margin-top:6px;font-size:10px">NEAR testnet · expires in 4 min</div><div class="s-spacer"></div>
+      <div style="display:flex;gap:6px"><div class="s-btn ol" style="flex:1">Cancel</div><div class="s-btn gr" style="flex:1.4">Confirm</div></div>
+    </div></div><figcaption><b>Confirm</b>Receiver, amount, expiry</figcaption></figure>
+
+    <figure class="gal-item"><div class="phone"><div class="screen">
+      <div class="s-top"><span class="s-mark"></span></div><div class="s-spacer"></div>
+      <div class="s-center"><svg class="s-check go" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30"/><path d="M22 36l9 9 17-19"/></svg><div class="s-lab" style="margin-top:14px">Paid</div><div class="s-big" style="margin-top:4px">0.5</div><div class="s-mut" style="margin-top:4px">to cafe.testnet</div></div>
+      <div class="s-spacer"></div><div class="s-btn ol" style="margin-bottom:6px">View on NearBlocks</div><div class="s-btn">Done</div>
+    </div></div><figcaption><b>Receipt</b>With explorer link</figcaption></figure>
+
+    <figure class="gal-item"><div class="phone"><div class="screen dk">
+      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Receive</b></div>
+      <div class="s-center"><div class="s-big" style="font-size:24px">1 <small>NEAR</small></div><div class="s-mut" style="margin-top:3px">to alice.testnet</div></div>
+      <div class="s-qr" data-qr></div>
+      <div class="s-center s-mut">Payer scans this with Halo</div><div class="s-spacer"></div>
+      <div style="display:flex;gap:6px"><div class="s-btn ol" style="flex:1">Cancel</div><div class="s-btn" style="flex:1">Use NFC</div></div>
+    </div></div><figcaption><b>Receive</b>NFC with QR fallback</figcaption></figure>
+
+    <figure class="gal-item"><div class="phone"><div class="screen">
+      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Connect account</b></div>
+      <div class="s-seg"><span>Secret key</span><span>Seed</span><span class="on">Passkey</span></div>
+      <div class="s-mut" style="font-size:10px;margin-bottom:8px">Prove ownership once. Halo adds a new device key on-chain and guards it with your passkey.</div>
+      <div class="s-in"><small>Account id (optional)</small>alice.testnet</div>
+      <div class="s-in" style="min-height:54px"><small>Secret key or seed phrase</small>••••••••••••••••</div>
+      <div class="s-spacer"></div><div class="s-btn gr">Link passkey</div>
+    </div></div><figcaption><b>Passkey linking</b>The differentiator</figcaption></figure>
+
+    <figure class="gal-item"><div class="phone"><div class="screen">
+      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Accounts</b></div>
+      <div class="s-acc"><span class="d on"></span><div>alice.testnet<small>Passkey-protected</small></div>⚿</div>
+      <div class="s-acc"><span class="d"></span><div>bob.testnet<small>Seed phrase</small></div>⚿</div>
+      <div class="s-acc"><span class="d"></span><div>shop.testnet<small>Secret key</small></div>⚿</div>
+      <div class="s-spacer"></div><div class="s-btn gr" style="margin-bottom:6px">Create new</div><div class="s-btn ol">Connect existing</div>
+    </div></div><figcaption><b>Accounts</b>Multi-account, remove anytime</figcaption></figure>
+
+    <figure class="gal-item"><div class="phone"><div class="screen dk">
+      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Merchant tag</b></div>
+      <div class="s-center s-mut" style="font-size:10px">Write a reusable pay-me sticker. Leave the amount empty to let customers type it.</div>
+      <div class="s-spacer"></div>
+      <div class="s-tag"><div class="st"></div><b style="font-size:12px">Hold an NFC sticker to the back of the phone…</b></div>
+      <div class="s-spacer"></div><div class="s-btn gr">Write tag</div>
+    </div></div><figcaption><b>Merchant</b>Write NFC stickers</figcaption></figure>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section id="security">
+  <div class="wrap">
+    <div class="sec-grid">
+      <div>
+        <span class="eyebrow reveal">Security</span>
+        <h2 class="reveal">Your keys.<br><em>Your phone.</em></h2>
+        <p class="lead reveal">Halo has no backend and no custody. Everything signs locally and talks straight to NEAR RPC.</p>
+        <div class="diagram reveal"><b>secret seed</b> ──AES-256-GCM──► <b>Android Keystore</b>
+   │                     (hardware-backed where available,
+   │                      unlock: biometric / device PIN, 15 s)
+   ▼
+ in-memory only ──ed25519 sign──► <b>NEAR RPC</b> (testnet)</div>
+      </div>
+      <div class="sec-list reveal" style="--d:.1s">
+        <div class="sec-item"><svg><use href="#i-lock"/></svg><div><b>Keystore-wrapped keys</b><span>The ed25519 seed is stored encrypted; the AES key lives in the Android Keystore and needs biometric or PIN auth.</span></div></div>
+        <div class="sec-item"><svg><use href="#i-fp"/></svg><div><b>Auth before every payment</b><span>Fingerprint, face or device PIN, plus your passkey if the account is passkey-protected.</span></div></div>
+        <div class="sec-item"><svg><use href="#i-shield"/></svg><div><b>One-time, expiring requests</b><span>Each request has a random 16-hex nonce and expires after 5 minutes. With the session contract, a nonce can be paid exactly once.</span></div></div>
+        <div class="sec-item"><svg><use href="#i-key"/></svg><div><b>Non-custodial by construction</b><span>No account, no server, no analytics. Remove an account and its key is deleted from the device.</span></div></div>
+        <div class="sec-item"><svg><use href="#i-check"/></svg><div><b>Tested crypto</b><span>Borsh transaction bytes, signatures, key formats and seed-phrase derivation are unit-tested against near-api-js vectors.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRACT -->
+<section id="contract" style="background:var(--soft);border-block:1px solid var(--line)">
+  <div class="wrap two">
+    <div>
+      <span class="eyebrow reveal">Optional · on-chain sessions</span>
+      <h2 class="reveal">Replay-proof<br><em>by contract.</em></h2>
+      <p class="lead reveal">Point Halo at a small Rust contract and each tap becomes a one-time payment session.</p>
+      <ul class="checks reveal">
+        <li>Nonce replay protection — each (receiver, nonce) pays once</li>
+        <li>Expiry checked on-chain against block time</li>
+        <li>NEP-297 style <code>payment</code> events for indexers</li>
+        <li>Native NEAR via <code>pay</code>, NEP-141 via <code>ft_on_transfer</code></li>
+        <li><code>get_payment</code> view gives the receiver an exact confirmation</li>
+        <li>Testnet deploy script included; plain transfers still work without it</li>
+      </ul>
+    </div>
+    <div class="code reveal" style="--d:.1s"><span class="c">// halo-sessions · near-sdk 5 (simplified excerpt)</span>
+<span class="k">#[payable]</span>
+<span class="k">pub fn</span> pay(&amp;<span class="k">mut</span> self, receiver_id: AccountId,
+           nonce: String, expires_at: u64) -&gt; Payment {
+    <span class="k">require!</span>(!deposit.is_zero(), <span class="s">"Attach the payment amount"</span>);
+    self.check(&amp;receiver_id, &amp;nonce, expires_at)?;
+    <span class="c">// "Nonce already used" · "Request expired"</span>
+    self.record(payer, receiver_id, nonce, ...);
+    Promise::new(receiver_id).transfer(amount)
+}
+
+<span class="c">// log: EVENT_JSON:{"standard":"halo",
+//   "event":"payment","data":[{...}]}</span></div>
+  </div>
+</section>
+
+<!-- COMPAT -->
+<section id="compat">
+  <div class="wrap">
+    <span class="eyebrow reveal">Compatibility</span>
+    <h2 class="reveal">Android only.<br><em>Here's why.</em></h2>
+    <div class="compat">
+      <div class="cm reveal"><h3><span class="ok">✓</span>Android 10+</h3><p>Needs NFC with host card emulation, a secure screen lock, and arm64 (virtually every phone since 2017).</p></div>
+      <div class="cm reveal" style="--d:.07s"><h3><span class="no">✕</span>iPhone</h3><p>iOS doesn't let third-party apps act as a card toward another phone. Apple reserves card emulation for Apple Pay and approved partners, so a phone-to-phone tap like this can't run on iOS.</p></div>
+      <div class="cm reveal" style="--d:.14s"><h3><span class="ok">✓</span>QR fallback</h3><p>No NFC, or NFC off? The same request shows as a QR code that Halo can scan. Emulators have no NFC, so test on real phones.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="dl" id="download">
+  <div class="wrap">
+    <div class="dl-card reveal">
+      <div>
+        <span class="eyebrow">Download</span>
+        <h2>Get Halo<br><em>for Android.</em></h2>
+        <a class="btn primary" id="mainDl" href="downloads/halo.apk" download="halo.apk" style="margin-top:8px"><svg><use href="#i-down"/></svg>Download APK</a>
+        <ol class="install">
+          <li><span>Download <code class="mono">halo.apk</code> on your phone (or transfer it).</span></li>
+          <li><span>Open it. When Android asks, allow <b>Install unknown apps</b> for your browser or file manager.</span></li>
+          <li><span>Open Halo, create or connect a testnet account, and grab free test NEAR from the <a href="https://near-faucet.io/" rel="noopener" style="text-decoration-color:var(--g)">faucet</a>.</span></li>
+          <li><span>Install on a second phone and tap them together.</span></li>
+        </ol>
+        <div class="reqs"><span>Android 10+</span><span>NFC (HCE)</span><span>Screen lock set</span><span>arm64</span><span>Testnet only</span></div>
+      </div>
+      <div class="spec" aria-label="APK details">
+        <div><span>Version</span><b data-rel="version">1.0.0-hackathon</b></div>
+        <div><span>Package</span><b class="mono" style="font-size:13px">com.halopay.near</b></div>
+        <div><span>Size</span><b><span data-rel="size_mb_label">6.97 MB</span> <small style="color:var(--muted);font-weight:400">(<span data-rel="size_bytes">6,968,504</span> bytes)</small></b></div>
+        <div><span>Architecture</span><b>arm64-v8a</b></div>
+        <div><span>Min Android</span><b>10 (API 29)</b></div>
+        <div style="flex-direction:column;gap:8px"><span>SHA-256 <button class="copy" id="copyHash">Copy</button></span><b class="hash" data-rel="sha256" id="hash">8f580755ef7303b69fc64af8f12b4d2849acaab0d83489ac500aa9a2caf86226</b></div>
+      </div>
+    </div>
+    <div class="honest reveal"><svg><use href="#i-info"/></svg><div><b>Honest note: hackathon build, testnet only.</b>Halo runs on NEAR testnet and holds no real value. It is a debug-signed APK that has not been security-audited, and Play Store distribution isn't set up. Verify the SHA-256 above after downloading.</div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding-top:40px">
+  <div class="wrap">
+    <span class="eyebrow reveal">FAQ</span>
+    <h2 class="reveal">Questions.</h2>
+    <div class="faq reveal">
+      <details><summary>Is this real money?</summary><p>No. Halo only talks to NEAR testnet. Testnet NEAR has no value and is free from a faucet.</p></details>
+      <details><summary>Do I need two phones?</summary><p>To try the NFC tap, yes: two Android 10+ phones with NFC, both running Halo. With one phone you can still create accounts, send by name, show a QR and write a merchant sticker.</p></details>
+      <details><summary>How do passkeys work here?</summary><p>NEAR can't verify passkey signatures on-chain, so the passkey acts as a gate rather than the signing key. Linking proves ownership of your existing account once, adds a fresh device key on-chain, registers a passkey, and stores only that device key (encrypted in the Keystore). Each payment then needs the passkey and your biometrics. Restoring from a passkey alone on a new phone isn't supported — keep your backup. Passkeys need this site deployed on your own domain (it serves the <code>assetlinks.json</code> that proves the app owns the passkey domain); until then Halo keeps the passkey switch off and everything else works. You can set your domain in Settings → Advanced.</p></details>
+      <details><summary>Can I import my existing account?</summary><p>Yes — with an <code>ed25519:</code> secret key or a 12/24-word seed phrase (derivation path m/44'/397'/0', same as common NEAR wallets). The account id is optional; Halo can look it up from the key.</p></details>
+      <details><summary>Where are my keys stored?</summary><p>On your phone only. The seed is AES-GCM encrypted with a key held by the Android Keystore that requires biometric or PIN authentication, and is decrypted in memory just long enough to sign.</p></details>
+      <details><summary>Can someone replay a payment request?</summary><p>Requests carry a random nonce and a 5-minute expiry, and the payer confirms each one. With the optional session contract, the same nonce can never be paid twice. Merchant stickers are intentionally reusable.</p></details>
+      <details><summary>Does it work with tokens?</summary><p>Yes: native NEAR, and NEP-141 tokens such as test USDC. Token payments through the session contract need the contract and the receiver to be registered with that token.</p></details>
+      <details><summary>Why can't I install it from the Play Store?</summary><p>It's a hackathon build distributed as an APK. Sideload it by allowing unknown sources for the app you open it with.</p></details>
+      <details><summary>Is the code open?</summary><p>The repository link is coming soon — see the footer.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div><a class="brand" href="#top" style="padding:0"><span class="mark"></span>Halo</a><p>Tap phones, pay in NEAR. A non-custodial NFC wallet built on <a href="https://near.org" rel="noopener" style="display:inline;text-decoration:underline;text-decoration-color:var(--g)">NEAR Protocol</a> for the NEAR hackathon.</p></div>
+      <div><h4>Product</h4><a href="#demo">Live tap</a><a href="#passkeys">Passkeys</a><a href="#features">Features</a><a href="#screens">Screens</a></div>
+      <div><h4>Learn</h4><a href="#security">Security</a><a href="#contract">Contract</a><a href="#compat">Compatibility</a><a href="#faq">FAQ</a></div>
+      <div><h4>Get it</h4><a href="downloads/halo.apk" download="halo.apk">Download APK</a><a href="https://github.com/YOUR-USERNAME/halo" data-placeholder="github" rel="noopener">GitHub (repo link coming soon)</a><a href="https://near-faucet.io/" rel="noopener">Testnet faucet</a><a href="https://testnet.nearblocks.io" rel="noopener">NearBlocks testnet</a></div>
+    </div>
+    <div class="legal"><span>© 2026 Halo · testnet only, not audited, no real funds.</span><span>Powered by NEAR · NFC is a trademark of its respective owner</span></div>
+  </div>
+</footer>
+
+<script src="assets/app.js" defer></script>
+</body>
+</html>
