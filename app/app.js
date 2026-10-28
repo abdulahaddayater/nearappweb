@@ -13,7 +13,7 @@ function poller(id, onUpdate) {
     try { const r = await api(`/api/requests?id=${encodeURIComponent(id)}`); onUpdate(r); if (r.status !== 'pending' && r.status !== 'settling') clearInterval(poll); } catch (_) {}
   }, 1000);
 }
-const paidHtml = (r) => `<span class="paid">Paid ✓</span><br><span class="small">${r.amount} USDC → ${r.to}${r.txHash ? ` · <a href="${cfg.explorer || 'https://testnet.nearblocks.io'}/txns/${r.txHash}" target="_blank">tx</a>` : r.simulated ? ' · simulated (demo mode)' : ''}</span>`;
+const paidHtml = (r) => `<span class="paid">Paid ✓</span><br><span class="small">${r.amount} NEAR → ${r.to}${r.txHash ? ` · <a href="${cfg.explorer || 'https://testnet.nearblocks.io'}/txns/${r.txHash}" target="_blank">tx</a>` : r.simulated ? ' · simulated (demo mode)' : ''}</span>`;
 
 function home() {
   const s = session(); if (!s) return show('s-signin');
@@ -52,14 +52,14 @@ async function openRequest(p) {
     const r = await api(`/api/requests?id=${encodeURIComponent(p.id)}`);
     if (r.status !== 'pending') return ($('p-note').textContent = `This request is ${r.status}`);
     show('s-pay'); $('p-scan').classList.add('hidden'); $('p-confirm').classList.remove('hidden');
-    $('c-amount').textContent = `${r.amount} USDC`; $('c-to').textContent = r.to; $('c-id').textContent = r.id;
+    $('c-amount').textContent = `${r.amount} NEAR`; $('c-to').textContent = r.to; $('c-id').textContent = r.id;
     $('confirm').onclick = () => pay(r);
   } catch (e) { $('p-note').textContent = e.message; }
 }
 async function pay(r) {
   const st = $('p-status'); st.classList.remove('hidden');
   try {
-    $('confirm').disabled = true; st.textContent = 'Confirm with Face ID / fingerprint…';
+    $('confirm').disabled = true; st.textContent = 'Confirm with fingerprint / face unlock…';
     await confirmWithBiometrics();
     st.textContent = 'Approving with NEAR Auth…';
     const signedDelegate = await signTransferDelegate(session(), r);

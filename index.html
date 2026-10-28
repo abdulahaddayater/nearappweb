@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>TapPay on NEAR — tap phones, pay in USDC</title>
-<meta name="description" content="TapPay: phone-to-phone USDC payments on NEAR. Tap, confirm with Face ID or fingerprint, done. Gasless, no seed phrase. Testnet prototype.">
+<title>TapPay on NEAR — tap phones, pay in NEAR</title>
+<meta name="description" content="TapPay: phone-to-phone NEAR payments for Android. Tap, confirm with your fingerprint, done. iPhone not supported yet. Gasless, no seed phrase. Testnet prototype.">
 <meta name="theme-color" content="#00EC97">
-<meta property="og:title" content="TapPay on NEAR — tap phones, pay in USDC">
-<meta property="og:description" content="Bring two phones together, USDC lands. Gasless, NEAR Auth sign-in, no seed phrase.">
+<meta property="og:title" content="TapPay on NEAR — tap phones, pay in NEAR">
+<meta property="og:description" content="Bring two Android phones together, NEAR lands. Gasless, NEAR Auth sign-in, no seed phrase.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -59,7 +59,7 @@
       <svg class="moon"><use href="#i-moon"/></svg>
       <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
     </button>
-    <a class="btn primary sm" href="/app/"><svg><use href="#i-nfc"/></svg>Open TapPay</a>
+    <a class="btn primary sm" href="/downloads/tappay.apk" download="tappay.apk"><svg><use href="#i-down"/></svg>Download APK</a>
   </div>
 </header>
 
@@ -69,17 +69,18 @@
   <div class="wrap grid">
     <div>
       <span class="pill reveal"><b>TESTNET</b>Prototype on NEAR</span>
-      <h1 class="reveal" style="--d:.05s">Tap phones.<br><em>USDC lands.</em></h1>
-      <p class="lead reveal" style="--d:.12s">The receiver types an amount. The sender holds their phone near, confirms with Face ID or fingerprint, and both screens say <b>Paid</b> within seconds. No gas, no seed phrase — the chain stays out of sight.</p>
+      <h1 class="reveal" style="--d:.05s">Tap phones.<br><em>NEAR lands.</em></h1>
+      <p class="lead reveal" style="--d:.12s">The receiver types an amount in NEAR. The sender holds their Android phone near, confirms with fingerprint or face unlock, and both screens say <b>Paid</b> within seconds. No gas, no seed phrase — the chain stays out of sight.</p>
       <div class="cta reveal" style="--d:.2s">
-        <a class="btn primary" href="/app/"><svg><use href="#i-nfc"/></svg>Try TapPay</a>
+        <a class="btn primary" href="/downloads/tappay.apk" download="tappay.apk"><svg><use href="#i-down"/></svg>Try TapPay <span style="opacity:.6;font-weight:500">APK · 6.97 MB</span></a>
+        <a class="btn ghost" href="/app/">Open web app</a>
         <a class="btn ghost" href="#demo">Watch a tap</a>
       </div>
       <div class="dlmeta reveal" style="--d:.28s">
-        <span><i></i>USDC (test)</span>
-        <span><i></i>Gasless via relayer</span>
-        <span><i></i>NEAR Auth sign-in</span>
-        <span><i></i>Testnet only</span>
+        <span><i></i>Android APK · 6.97 MB</span>
+        <span><i></i>Android 10+ · arm64</span>
+        <span><i></i>Pay in NEAR · gasless</span>
+        <span><i></i>No iPhone yet</span>
       </div>
     </div>
     <div class="hero-visual reveal" style="--d:.15s">
@@ -87,7 +88,7 @@
       <div class="phone"><div class="screen dk">
         <div class="s-top"><span class="s-mark"></span><span class="s-chip">alice.testnet</span></div>
         <div class="s-lab">Balance · testnet</div>
-        <div class="s-bal">24.50<small>USDC</small></div>
+        <div class="s-bal">24.50<small>NEAR</small></div>
         <div class="s-orb"><div><svg><use href="#i-nfc"/></svg>Tap to pay</div></div>
         <div class="s-row3"><div class="s-q"><i></i>Receive</div><div class="s-q"><i></i>Send</div><div class="s-q"><i></i>Scan QR</div></div>
         <div style="margin-top:8px">
@@ -95,8 +96,8 @@
           <div class="s-tx"><span class="av">↗</span><div>bob.testnet<small>Sent · yesterday</small></div><b>−12.00</b></div>
         </div>
       </div></div>
-      <div class="float f1"><span class="dot"><svg><use href="#i-check"/></svg></span><div><b>5 USDC paid</b><small>gas paid by relayer</small></div></div>
-      <div class="float f2"><span class="dot" style="background:var(--fg);color:var(--bg)"><svg><use href="#i-fp"/></svg></span><div><b>Face ID verified</b><small>NEAR Auth · no seed phrase</small></div></div>
+      <div class="float f1"><span class="dot"><svg><use href="#i-check"/></svg></span><div><b>5 NEAR paid</b><small>gas paid by relayer</small></div></div>
+      <div class="float f2"><span class="dot" style="background:var(--fg);color:var(--bg)"><svg><use href="#i-fp"/></svg></span><div><b>Fingerprint verified</b><small>NEAR Auth · no seed phrase</small></div></div>
     </div>
   </div>
 </section>
@@ -106,8 +107,8 @@
   <div class="row reveal">
     <div class="stat"><b data-count="0" data-suf="gas">0gas</b><span>NEAR needed by the payer</span></div>
     <div class="stat"><b data-count="0" data-suf="seed">0seed</b><span>phrases to write down</span></div>
-    <div class="stat"><b data-count="3" data-suf="pairs">3pairs</b><span>Android/iPhone combos supported</span></div>
-    <div class="stat"><b data-count="1" data-suf="tap">1tap</b><span>plus Face ID / fingerprint</span></div>
+    <div class="stat"><b data-count="1" data-suf="token">1token</b><span>NEAR — and only NEAR</span></div>
+    <div class="stat"><b data-count="1" data-suf="tap">1tap</b><span>plus fingerprint / face unlock</span></div>
   </div>
 </div></div>
 
@@ -118,7 +119,7 @@
       <div>
         <span class="eyebrow reveal">Interactive simulation</span>
         <h2 class="reveal">See the tap,<br><em>step by step.</em></h2>
-        <p class="lead reveal">The receiver's phone serves a one-time USDC request. The sender's reads it over NFC (or QR), confirms with Face ID / fingerprint / passkey, and our relayer submits it gas-free. Pick an amount and replay.</p>
+        <p class="lead reveal">The receiver's phone serves a one-time NEAR request. The sender's reads it over NFC (or QR), confirms with fingerprint / face unlock / passkey, and our relayer submits it gas-free. Pick an amount and replay.</p>
       </div>
       <div class="controls reveal" role="group" aria-label="Demo amount">
         <button class="amt" data-v="1">1</button>
@@ -131,7 +132,7 @@
     <div class="stage-outer" id="stageOuter">
       <div class="stage" id="stage" data-s="idle">
         <div class="burst"><i></i><i></i><i></i></div>
-        <div class="coin"><span data-amt>5</span> USDC</div>
+        <div class="coin"><span data-amt>5</span> NEAR</div>
         <!-- sender -->
         <div class="phone" id="pSend"><span class="who">Sender · bob.testnet</span><div class="screen dk buzz">
           <div class="s-top"><span class="s-mark"></span><span class="s-chip">bob.testnet</span></div>
@@ -139,28 +140,28 @@
           <div class="st t">
             <div class="s-lab s-center">Payment request</div><div class="s-av">A</div><div class="s-center" style="font-weight:550;margin-bottom:8px">alice.testnet</div>
             <div class="s-spacer"></div>
-            <div class="s-big"><span data-amt>5</span> <small>USDC</small></div>
-            <div class="s-center s-mut" style="margin-top:6px;font-size:10px">USDC (test) · NEAR testnet · one-time</div>
+            <div class="s-big"><span data-amt>5</span> <small>NEAR</small></div>
+            <div class="s-center s-mut" style="margin-top:6px;font-size:10px">NEAR · testnet · one-time</div>
             <div class="s-spacer"></div>
             <div class="fp"><svg><use href="#i-fp"/></svg></div>
             <div class="s-btn gr">Confirm</div>
           </div>
-          <div class="st sd s-center"><div class="s-spacer"></div><div class="spin"></div><b style="font-size:15px">Sending <span data-amt>5</span> USDC</b><span class="s-mut" style="margin-top:4px;font-size:10.5px">Approved with NEAR Auth · relayer pays gas</span><div class="s-spacer"></div></div>
+          <div class="st sd s-center"><div class="s-spacer"></div><div class="spin"></div><b style="font-size:15px">Sending <span data-amt>5</span> NEAR</b><span class="s-mut" style="margin-top:4px;font-size:10.5px">Approved with NEAR Auth · relayer pays gas</span><div class="s-spacer"></div></div>
           <div class="st d s-center"><div class="s-spacer"></div><svg class="s-check" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30"/><path d="M22 36l9 9 17-19"/></svg><div class="s-lab" style="margin-top:14px">Paid</div><div class="s-big" style="margin-top:4px"><span data-amt>5</span></div><span class="s-mut" style="margin-top:4px">to alice.testnet</span><div class="s-spacer"></div><div class="s-btn ol">View on NearBlocks</div></div>
         </div></div>
         <!-- receiver -->
         <div class="phone" id="pRecv"><span class="who">Receiver · alice.testnet</span><div class="screen">
           <div class="s-top"><span class="s-mark"></span><span class="s-chip">alice.testnet</span></div>
-          <div class="st i s-center"><div class="s-lab">Requesting</div><div class="s-big" style="margin-top:6px"><span data-amt>5</span> <small>USDC</small></div><div class="s-spacer"></div><div class="s-rings"><i></i><i></i><i></i><svg><use href="#i-nfc"/></svg></div><span class="s-mut">Ask the payer to tap their phone</span><div class="s-spacer"></div><div class="s-btn ol">Show QR</div></div>
-          <div class="st t2 s-center"><div class="s-lab">Requesting</div><div class="s-big" style="margin-top:6px"><span data-amt>5</span> <small>USDC</small></div><div class="s-spacer"></div><div class="s-rings"><i></i><i></i><i></i><svg style="color:var(--g)"><use href="#i-nfc"/></svg></div><b class="g" style="font-size:12px">Tapped — waiting for payment…</b><div class="s-spacer"></div><div class="s-btn ol">Cancel</div></div>
-          <div class="st d s-center"><div class="s-spacer"></div><svg class="s-check" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30"/><path d="M22 36l9 9 17-19"/></svg><div class="s-lab" style="margin-top:14px">Received</div><div class="s-big" style="margin-top:4px"><span data-amt>5</span> <small>USDC</small></div><span class="s-mut" style="margin-top:4px">on alice.testnet</span><div class="s-spacer"></div><div class="s-btn">Done</div></div>
+          <div class="st i s-center"><div class="s-lab">Requesting</div><div class="s-big" style="margin-top:6px"><span data-amt>5</span> <small>NEAR</small></div><div class="s-spacer"></div><div class="s-rings"><i></i><i></i><i></i><svg><use href="#i-nfc"/></svg></div><span class="s-mut">Ask the payer to tap their phone</span><div class="s-spacer"></div><div class="s-btn ol">Show QR</div></div>
+          <div class="st t2 s-center"><div class="s-lab">Requesting</div><div class="s-big" style="margin-top:6px"><span data-amt>5</span> <small>NEAR</small></div><div class="s-spacer"></div><div class="s-rings"><i></i><i></i><i></i><svg style="color:var(--g)"><use href="#i-nfc"/></svg></div><b class="g" style="font-size:12px">Tapped — waiting for payment…</b><div class="s-spacer"></div><div class="s-btn ol">Cancel</div></div>
+          <div class="st d s-center"><div class="s-spacer"></div><svg class="s-check" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30"/><path d="M22 36l9 9 17-19"/></svg><div class="s-lab" style="margin-top:14px">Received</div><div class="s-big" style="margin-top:4px"><span data-amt>5</span> <small>NEAR</small></div><span class="s-mut" style="margin-top:4px">on alice.testnet</span><div class="s-spacer"></div><div class="s-btn">Done</div></div>
         </div></div>
       </div>
     </div>
     <div class="timeline" id="timeline" aria-hidden="true">
-      <span data-t="idle">1 · Request</span><span data-t="approach">2 · Approach</span><span data-t="tap">3 · NFC read</span><span data-t="auth">4 · Face ID / passkey</span><span data-t="send">5 · Relayer sends</span><span data-t="done">6 · Receipt</span>
+      <span data-t="idle">1 · Request</span><span data-t="approach">2 · Approach</span><span data-t="tap">3 · NFC read</span><span data-t="auth">4 · Fingerprint / passkey</span><span data-t="send">5 · Relayer sends</span><span data-t="done">6 · Receipt</span>
     </div>
-    <p class="sim-note">Animated simulation with sample data. On real devices the Android side emulates the tag; iPhone ↔ iPhone uses the QR fallback.</p>
+    <p class="sim-note">Animated simulation with sample data. On real devices two Android phones tap over NFC (QR fallback). iPhone is not supported yet.</p>
   </div>
 </section>
 
@@ -170,12 +171,12 @@
     <span class="eyebrow reveal">How it works</span>
     <h2 class="reveal">Four moves.<br><em>Seconds, not minutes.</em></h2>
     <div class="steps">
-      <div class="step reveal"><h3>Request</h3><p>Receiver types an amount. TapPay creates a payment request: who gets paid, how much, which token (USDC) and a one-time ID.</p>
+      <div class="step reveal"><h3>Request</h3><p>Receiver types an amount. TapPay creates a payment request: who gets paid, how much, in NEAR and a one-time ID.</p>
         <div class="mini"><div class="s-rings"><i></i><i></i><i></i><svg style="color:var(--fg)"><use href="#i-nfc"/></svg></div></div></div>
       <div class="step reveal" style="--d:.1s"><h3>Tap or scan</h3><p>Hold the phones together (NFC) or scan the QR — an https link that opens TapPay. The tap only carries the request; money never travels over NFC.</p>
-        <div class="mini"><div class="tx">NFC / QR ← <b>https://…/app/?r=…</b><br>to <b>alice.testnet</b> · <b>5 USDC</b></div></div></div>
-      <div class="step reveal" style="--d:.2s"><h3>Confirm &amp; settle</h3><p>A short NEAR Auth approval with Face ID / fingerprint / passkey signs a meta-transaction. Our relayer submits it and pays the gas; both screens flip to <b>Paid</b>.</p>
-        <div class="mini"><div class="tx">ft_transfer <b>5 USDC</b><br>bob.testnet → alice.testnet<br><span style="color:var(--g)">✓ relayed, gasless</span></div></div></div>
+        <div class="mini"><div class="tx">NFC / QR ← <b>https://…/app/?r=…</b><br>to <b>alice.testnet</b> · <b>5 NEAR</b></div></div></div>
+      <div class="step reveal" style="--d:.2s"><h3>Confirm &amp; settle</h3><p>A short NEAR Auth approval with fingerprint / face unlock / passkey signs a meta-transaction. Our relayer submits it and pays the gas; both screens flip to <b>Paid</b>.</p>
+        <div class="mini"><div class="tx">Transfer <b>5 NEAR</b><br>bob.testnet → alice.testnet<br><span style="color:var(--g)">✓ relayed, gasless</span></div></div></div>
     </div>
   </div>
 </section>
@@ -192,14 +193,14 @@
         <ul class="reveal">
           <li>Sign in with <b>Google</b>, <b>Apple</b>, <b>email</b> or a <b>passkey</b></li>
           <li>A <b>*.testnet</b> account is created automatically</li>
-          <li>Every payment confirmed with <b>Face ID / fingerprint / passkey</b></li>
+          <li>Every payment confirmed with <b>fingerprint / face unlock / passkey</b></li>
           <li>No NEAR needed for gas — the <b>relayer</b> covers it</li>
         </ul>
       </div>
       <div class="flow reveal" style="--d:.1s">
         <div class="fstep"><span class="n">1</span><div><b>Open TapPay</b><small>In your phone's browser at /app/ — add it to your Home screen like an app.</small></div></div>
         <div class="fstep"><span class="n">2</span><div><b>Sign in with NEAR Auth</b><small>Google, Apple, email or passkey. Your NEAR account is created for you.</small></div></div>
-        <div class="fstep"><span class="n">3</span><div><b>Get test USDC</b><small>Testnet only — no real funds involved.</small></div></div>
+        <div class="fstep"><span class="n">3</span><div><b>Get test NEAR</b><small>Testnet only — no real funds involved.</small></div></div>
         <div class="fstep"><span class="n">4</span><div><b>Tap to pay</b><small>Each payment is a quick biometric approval that signs a gasless meta-transaction.</small></div></div>
       </div>
     </div>
@@ -212,16 +213,16 @@
     <span class="eyebrow reveal">Everything in TapPay</span>
     <h2 class="reveal">Crypto payments,<br><em>chain out of sight.</em></h2>
     <div class="fgrid">
-      <article class="fc w reveal"><div class="ic"><svg><use href="#i-nfc"/></svg></div><h3>Phone-to-phone NFC tap</h3><p>Bring two phones together and the request jumps across. Android phones can be either side; with an iPhone, the Android phone is the tapped side and the iPhone reads it.</p><div class="tags"><span>Android ↔ Android</span><span>iPhone ↔ Android</span><span>QR fallback</span></div></article>
-      <article class="fc reveal" style="--d:.05s"><div class="ic"><svg><use href="#i-coin"/></svg></div><h3>USDC on NEAR</h3><p>Payments are in USDC (test) on NEAR testnet — stable amounts people understand.</p></article>
+      <article class="fc w reveal"><div class="ic"><svg><use href="#i-nfc"/></svg></div><h3>Phone-to-phone NFC tap</h3><p>Bring two Android phones together and the request jumps across — either side can be the receiver. iPhone is not supported right now.</p><div class="tags"><span>Android ↔ Android</span><span>NFC</span><span>QR fallback (Android)</span></div></article>
+      <article class="fc reveal" style="--d:.05s"><div class="ic"><svg><use href="#i-coin"/></svg></div><h3>NEAR only</h3><p>Every payment is a native NEAR transfer on NEAR testnet. No other tokens.</p></article>
       <article class="fc reveal"><div class="ic"><svg><use href="#i-bolt"/></svg></div><h3>Gasless</h3><p>Meta-transactions are submitted by our relayer, which pays the gas. You never need NEAR tokens.</p></article>
       <article class="fc reveal" style="--d:.05s"><div class="ic"><svg><use href="#i-users"/></svg></div><h3>NEAR Auth sign-in</h3><p>Google, Apple, email or passkey. Account created for you; no seed phrase.</p></article>
-      <article class="fc reveal" style="--d:.1s"><div class="ic"><svg><use href="#i-fp"/></svg></div><h3>Biometric confirm</h3><p>Every payment needs Face ID, fingerprint or a passkey via a short NEAR Auth approval.</p></article>
-      <article class="fc reveal"><div class="ic"><svg><use href="#i-qr"/></svg></div><h3>QR that just works</h3><p>Every request is also a QR with an https link — scan with any camera and it opens TapPay. iPhone ↔ iPhone uses this.</p></article>
+      <article class="fc reveal" style="--d:.1s"><div class="ic"><svg><use href="#i-fp"/></svg></div><h3>Biometric confirm</h3><p>Every payment needs your fingerprint, face unlock or a passkey via a short NEAR Auth approval.</p></article>
+      <article class="fc reveal"><div class="ic"><svg><use href="#i-qr"/></svg></div><h3>QR that just works</h3><p>Every request is also a QR with an https link — the Android fallback when NFC is off or missing.</p></article>
       <article class="fc reveal" style="--d:.05s"><div class="ic"><svg><use href="#i-shield"/></svg></div><h3>One-time requests</h3><p>Each request carries a one-time ID, so a tap pays exactly what was asked, once.</p></article>
       <article class="fc reveal" style="--d:.1s"><div class="ic"><svg><use href="#i-list"/></svg></div><h3>Live Paid status</h3><p>Both screens flip to <b>Paid</b> as soon as the transfer lands, with a NearBlocks link.</p></article>
       <article class="fc w reveal"><div class="ic"><svg><use href="#i-send"/></svg></div><h3>Installable web app</h3><p>TapPay is a PWA at <code>/app/</code> — open it in your phone's browser or add it to the Home screen. No APK sideloading.</p><div class="tags"><span>PWA</span><span>Add to Home screen</span><span>Light &amp; dark</span></div></article>
-      <article class="fc reveal"><div class="ic"><svg><use href="#i-wave"/></svg></div><h3>Stretch: cross-chain payout</h3><p>Receive on Base, Arbitrum or Solana via NEAR Intents. Not shipped — mainnet only.</p></article>
+      <article class="fc reveal"><div class="ic"><svg><use href="#i-wave"/></svg></div><h3>Haptics &amp; motion</h3><p>Pulsing NFC rings, a buzz on tap and a self-drawing check when the NEAR lands.</p></article>
     </div>
   </div>
 </section>
@@ -236,7 +237,7 @@
   <div class="gal-scroll" id="gal">
     <figure class="gal-item"><div class="phone"><div class="screen dk">
       <div class="s-top"><span class="s-mark"></span><span class="s-chip">alice.testnet</span></div>
-      <div class="s-lab">Balance · testnet</div><div class="s-bal">24.50<small>USDC</small></div>
+      <div class="s-lab">Balance · testnet</div><div class="s-bal">24.50<small>NEAR</small></div>
       <div class="s-orb"><div><svg><use href="#i-nfc"/></svg>Tap to pay</div></div>
       <div class="s-row3"><div class="s-q"><i></i>Receive</div><div class="s-q"><i></i>Send</div><div class="s-q"><i></i>Scan QR</div></div>
       <div style="margin-top:8px"><div class="s-tx"><span class="av in">↙</span><div>cafe.testnet<small>Received</small></div><b class="g">+5.00</b></div><div class="s-tx"><span class="av">↗</span><div>bob.testnet<small>Sent</small></div><b>−12.00</b></div></div>
@@ -245,7 +246,7 @@
     <figure class="gal-item"><div class="phone"><div class="screen">
       <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Pay</b></div>
       <div class="s-lab s-center">Payment request</div><div class="s-av">C</div><div class="s-center" style="font-weight:550">cafe.testnet</div>
-      <div class="s-spacer"></div><div class="s-big">5 <small>USDC</small></div><div class="s-center s-mut" style="margin-top:6px;font-size:10px">USDC (test) · NEAR testnet · one-time</div><div class="s-spacer"></div>
+      <div class="s-spacer"></div><div class="s-big">5 <small>NEAR</small></div><div class="s-center s-mut" style="margin-top:6px;font-size:10px">NEAR · testnet · one-time</div><div class="s-spacer"></div>
       <div style="display:flex;gap:6px"><div class="s-btn ol" style="flex:1">Cancel</div><div class="s-btn gr" style="flex:1.4">Confirm</div></div>
     </div></div><figcaption><b>Confirm</b>Receiver, amount, expiry</figcaption></figure>
 
@@ -257,9 +258,9 @@
 
     <figure class="gal-item"><div class="phone"><div class="screen dk">
       <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Receive</b></div>
-      <div class="s-center"><div class="s-big" style="font-size:24px">10 <small>USDC</small></div><div class="s-mut" style="margin-top:3px">to alice.testnet</div></div>
+      <div class="s-center"><div class="s-big" style="font-size:24px">10 <small>NEAR</small></div><div class="s-mut" style="margin-top:3px">to alice.testnet</div></div>
       <div class="s-qr" data-qr></div>
-      <div class="s-center s-mut">Payer scans with their camera — opens TapPay</div><div class="s-spacer"></div>
+      <div class="s-center s-mut">Payer scans it with TapPay (Android)</div><div class="s-spacer"></div>
       <div style="display:flex;gap:6px"><div class="s-btn ol" style="flex:1">Cancel</div><div class="s-btn" style="flex:1">Use NFC</div></div>
     </div></div><figcaption><b>Receive</b>NFC with QR fallback</figcaption></figure>
 
@@ -282,13 +283,13 @@
         <div class="diagram reveal"><b>payment request</b> ──NFC / QR──► <b>sender's phone</b>
    │
    ▼
- <b>NEAR Auth</b> (Face ID / fingerprint / passkey)
+ <b>NEAR Auth</b> (fingerprint / face unlock / passkey)
    │  signs meta-transaction
    ▼
- <b>relayer</b> ──pays gas──► <b>NEAR testnet</b> (USDC)</div>
+ <b>relayer</b> ──pays gas──► <b>NEAR testnet</b> (native NEAR)</div>
       </div>
       <div class="sec-list reveal" style="--d:.1s">
-        <div class="sec-item"><svg><use href="#i-fp"/></svg><div><b>Biometric before every payment</b><span>Face ID, fingerprint or passkey through a short NEAR Auth approval.</span></div></div>
+        <div class="sec-item"><svg><use href="#i-fp"/></svg><div><b>Biometric before every payment</b><span>Fingerprint, face unlock or passkey through a short NEAR Auth approval.</span></div></div>
         <div class="sec-item"><svg><use href="#i-key"/></svg><div><b>No seed phrase</b><span>NEAR Auth manages your account; there is nothing to write down or leak.</span></div></div>
         <div class="sec-item"><svg><use href="#i-shield"/></svg><div><b>One-time requests</b><span>Each request has a one-time ID so it can't be paid twice.</span></div></div>
         <div class="sec-item"><svg><use href="#i-nfc"/></svg><div><b>Money never travels over NFC</b><span>The tap only carries the request; the transfer happens on NEAR.</span></div></div>
@@ -301,11 +302,11 @@
 <section id="compat" style="background:var(--soft);border-block:1px solid var(--line)">
   <div class="wrap">
     <span class="eyebrow reveal">Which phones work</span>
-    <h2 class="reveal">Android, iPhone.<br><em>Here's how.</em></h2>
+    <h2 class="reveal">Android only.<br><em>No iPhone yet.</em></h2>
     <div class="compat">
-      <div class="cm reveal"><h3><span class="ok">✓</span>Android ↔ Android</h3><p>NFC tap — either side can be the receiver.</p></div>
-      <div class="cm reveal" style="--d:.07s"><h3><span class="ok">✓</span>iPhone ↔ Android</h3><p>NFC tap — the Android phone is the tapped (receiving/emulating) side, the iPhone reads it.</p></div>
-      <div class="cm reveal" style="--d:.14s"><h3><span class="ok">✓</span>iPhone ↔ iPhone</h3><p>QR fallback — receiver shows a QR, sender scans it. Apple restricts card emulation, so iPhones can't be the tapped side.</p></div>
+      <div class="cm reveal"><h3><span class="ok">✓</span>Android ↔ Android</h3><p>NFC tap between two Android 10+ phones — either side can be the receiver.</p></div>
+      <div class="cm reveal" style="--d:.07s"><h3><span class="no">✕</span>iPhone</h3><p>iPhone is not supported right now — not as payer, not as receiver. Use two Android phones.</p></div>
+      <div class="cm reveal" style="--d:.14s"><h3><span class="ok">✓</span>QR fallback (Android)</h3><p>NFC off or unavailable on an Android phone? The receiver shows a QR and the sender scans it.</p></div>
     </div>
   </div>
 </section>
@@ -315,27 +316,30 @@
   <div class="wrap">
     <div class="dl-card reveal">
       <div>
-        <span class="eyebrow">Try it</span>
-        <h2>Open TapPay<br><em>on two phones.</em></h2>
-        <a class="btn primary" href="/app/" style="margin-top:8px"><svg><use href="#i-nfc"/></svg>Open TapPay</a>
+        <span class="eyebrow">Download</span>
+        <h2>Get TapPay<br><em>on two phones.</em></h2>
+        <a class="btn primary" href="/downloads/tappay.apk" download="tappay.apk" style="margin-top:8px"><svg><use href="#i-down"/></svg>Try TapPay · Download APK</a>
+        <a class="btn ghost" href="/app/" style="margin-top:8px">Open web app</a>
         <ol class="install">
-          <li><span>Open <code class="mono">/app/</code> in your phone's browser (optionally Add to Home screen).</span></li>
+          <li><span>Download <code class="mono">tappay.apk</code> on an Android phone and allow <b>Install unknown apps</b> — or open <a href="/app/">/app/</a> in Chrome on Android.</span></li>
           <li><span>Sign in with Google, Apple, email or passkey via NEAR Auth.</span></li>
           <li><span>Receiver types an amount; sender taps (NFC) or scans the QR.</span></li>
-          <li><span>Confirm with Face ID / fingerprint — both screens show <b>Paid</b>.</span></li>
+          <li><span>Confirm with fingerprint — both screens show <b>Paid</b>.</span></li>
         </ol>
-        <div class="reqs"><span>Modern browser</span><span>NFC (Android) or camera</span><span>USDC (test)</span><span>Testnet only</span></div>
+        <div class="reqs"><span>Android 10+</span><span>NFC</span><span>NEAR only</span><span>No iPhone</span><span>Testnet only</span></div>
       </div>
       <div class="spec" aria-label="TapPay details">
         <div><span>Network</span><b>NEAR testnet</b></div>
-        <div><span>Token</span><b>USDC (test)</b></div>
+        <div><span>Token</span><b>NEAR (native)</b></div>
+        <div><span>Devices</span><b>Android only — no iPhone</b></div>
         <div><span>Gas</span><b>Paid by relayer</b></div>
         <div><span>Sign-in</span><b>NEAR Auth</b></div>
-        <div><span>Confirm</span><b>Face ID / fingerprint / passkey</b></div>
-        <div><span>App</span><b class="mono" style="font-size:13px">/app/ (PWA)</b></div>
+        <div><span>Confirm</span><b>fingerprint / face unlock / passkey</b></div>
+        <div><span>Android APK</span><b>6.97 MB · arm64 · Android 10+</b></div>
+        <div><span>Web app</span><b class="mono" style="font-size:13px">/app/ (PWA)</b></div>
       </div>
     </div>
-    <div class="honest reveal" id="limits"><svg><use href="#i-info"/></svg><div><b>Honest note: prototype, testnet only.</b>TapPay is not a licensed payment product: no KYC, no cash in or out. The app must be open on both phones, every tap pair needs one Android phone with NFC, and each payment opens a short NEAR Auth approval. NEAR Auth on mainnet needs whitelisting and NEAR Intents has no testnet.</div></div>
+    <div class="honest reveal" id="limits"><svg><use href="#i-info"/></svg><div><b>Honest note: prototype, testnet only.</b>TapPay is not a licensed payment product: no KYC, no cash in or out. The app must be open on both phones, both phones must be Android (iPhone is not supported yet), and each payment opens a short NEAR Auth approval. NEAR Auth on mainnet needs whitelisting.</div></div>
   </div>
 </section>
 
@@ -345,13 +349,13 @@
     <span class="eyebrow reveal">FAQ</span>
     <h2 class="reveal">Questions.</h2>
     <div class="faq reveal">
-      <details><summary>Is this real money?</summary><p>No. TapPay runs on NEAR testnet with test USDC, which has no value.</p></details>
+      <details><summary>Is this real money?</summary><p>No. TapPay runs on NEAR testnet with test NEAR, which has no value.</p></details>
       <details><summary>Do I need NEAR for gas?</summary><p>No. Payments are meta-transactions; our relayer submits them and pays the gas.</p></details>
       <details><summary>Do I need a seed phrase?</summary><p>No. Sign in with Google, Apple, email or a passkey through NEAR Auth — your NEAR account is created for you.</p></details>
-      <details><summary>Does it work on iPhone?</summary><p>Yes. iPhone ↔ Android uses NFC with the Android phone as the tapped side. iPhone ↔ iPhone uses the QR fallback.</p></details>
-      <details><summary>Do I need two phones?</summary><p>To try a tap, yes. The QR is an https link, so the sender can also scan it with any camera.</p></details>
-      <details><summary>Do I need to install an APK?</summary><p>No. TapPay is a web app at <a href="/app/">/app/</a> — open it in your browser or add it to your Home screen. The old Halo APK is deprecated.</p></details>
-      <details><summary>Can I get paid on another chain?</summary><p>That's a stretch goal via NEAR Intents (Base, Arbitrum, Solana). Not shipped — Intents is mainnet only.</p></details>
+      <details><summary>Does it work on iPhone?</summary><p>No — iPhone is not supported right now. TapPay currently works on Android phones only (Android 10+ with NFC).</p></details>
+      <details><summary>Do I need two phones?</summary><p>To try a tap, yes: two Android phones with TapPay. If NFC is off or missing, the receiver can show a QR and the sender scans it.</p></details>
+      <details><summary>Is there an Android app?</summary><p>Yes — download the Android APK (6.97 MB, Android 10+, arm64, testnet) <a href="/downloads/tappay.apk" download="tappay.apk">right here</a>. It is the existing Android build restored for download, debug-signed and not audited. The TapPay web app (PWA) is at <a href="/app/">/app/</a> (Chrome on Android). iPhone is not supported yet.</p></details>
+      <details><summary>Which tokens can I pay with?</summary><p>Only NEAR. TapPay is a NEAR-only app: every payment is a native NEAR transfer on NEAR testnet.</p></details>
     </div>
   </div>
 </section>
@@ -360,10 +364,10 @@
 <footer>
   <div class="wrap">
     <div class="foot">
-      <div><a class="brand" href="#top" style="padding:0"><img src="/assets/favicon.svg" alt="" width="24" height="24" style="border-radius:6px">TapPay</a><p>Tap phones, pay in USDC. Built on <a href="https://near.org" rel="noopener" style="display:inline;text-decoration:underline;text-decoration-color:var(--g)">NEAR Protocol</a>.</p></div>
+      <div><a class="brand" href="#top" style="padding:0"><img src="/assets/favicon.svg" alt="" width="24" height="24" style="border-radius:6px">TapPay</a><p>Tap phones, pay in NEAR. Android only for now. Built on <a href="https://near.org" rel="noopener" style="display:inline;text-decoration:underline;text-decoration-color:var(--g)">NEAR Protocol</a>.</p></div>
       <div><h4>Product</h4><a href="#demo">Live tap</a><a href="#passkeys">Sign in</a><a href="#features">Features</a><a href="#screens">Screens</a></div>
       <div><h4>Learn</h4><a href="#how">How it works</a><a href="#security">Security</a><a href="#compat">Devices</a><a href="#faq">FAQ</a></div>
-      <div><h4>Try it</h4><a href="/app/">Open TapPay</a><a href="https://github.com/abdulahaddayater/nearappweb" rel="noopener">GitHub</a><a href="https://testnet.nearblocks.io" rel="noopener">NearBlocks testnet</a></div>
+      <div><h4>Try it</h4><a href="/downloads/tappay.apk" download="tappay.apk">Download APK</a><a href="/app/">Web app</a><a href="https://github.com/abdulahaddayater/nearappweb" rel="noopener">GitHub</a><a href="https://testnet.nearblocks.io" rel="noopener">NearBlocks testnet</a></div>
     </div>
     <div class="legal"><span>© 2026 TapPay · testnet prototype, not a licensed payment product.</span><span>Powered by NEAR · NFC is a trademark of its respective owner</span></div>
   </div>

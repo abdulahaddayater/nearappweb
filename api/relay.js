@@ -1,7 +1,7 @@
 // POST /api/relay { id, sender, signedDelegate (base64 borsh SignedDelegate) }
-// Gasless settlement (NEP-366 meta-transaction): the sender signs a DelegateAction that calls
-// ft_transfer on the USDC contract; the TapPay relayer wraps it in a transaction and pays the gas.
-// Neither phone needs NEAR tokens.
+// Gasless settlement (NEP-366 meta-transaction): the sender signs a DelegateAction with a single native
+// NEAR Transfer to the receiver; the TapPay relayer wraps it in a transaction and pays the gas.
+// The sender only needs the NEAR being paid — no extra NEAR for gas.
 const cfg = require('../lib/config');
 const store = require('../lib/store');
 const { send, body } = require('../lib/http');
@@ -16,17 +16,14 @@ async function relayerAccount() {
   return (_relayer = await near.account(cfg.relayer.accountId));
 }
 
-// Only relay a delegate that pays exactly this request: one ft_transfer to the receiver for the amount, memo = id.
+// Only relay a delegate that pays exactly this request: one native NEAR Transfer to the receiver for the amount.
+// (The one-time request ID is enforced server-side: a request can only be relayed once.)
 function checkDelegate(sd, r, sender) {
   const da = sd.delegateAction;
   if (da.senderId !== sender) throw new Error('sender mismatch');
-  if (da.receiverId !== r.token) throw new Error('wrong token contract');
-  if (da.actions.length !== 1 || !da.actions[0].functionCall) throw new Error('unexpected actions');
-  const fc = da.actions[0].functionCall;
-  if (fc.methodName !== 'ft_transfer') throw new Error('unexpected method');
-  if (BigInt(fc.deposit.toString()) !== 1n) throw new Error('ft_transfer needs 1 yocto deposit');
-  const args = JSON.parse(Buffer.from(fc.args).toString());
-  if (args.receiver_id !== r.to || args.amount !== r.units || args.memo !== `tappay:${r.id}`) throw new Error('request mismatch');
+  if (da.receiverId !== r.to) throw new Error('wrong receiver');
+  if (da.actions.length !== 1 || !da.actions[0].transfer) throw new Error('only a single NEAR transfer is allowed');
+  if (da.actions[0].transfer.deposit.toString() !== r.units) throw new Error('amount mismatch');
 }
 
 function decodeSignedDelegate(b64) {
@@ -54,15 +51,10 @@ module.exports = async (req, res) => {
       return send(res, 200, r);
     }
 
-    const { transactions, utils } = require('near-api-js');
+    const { transactions } = require('near-api-js');
     const sd = decodeSignedDelegate(signedDelegate);
     checkDelegate(sd, r, sender);
     const relayer = await relayerAccount();
-    // Relayer also covers the receiver's FT storage registration if needed (idempotent, relayer pays).
-    try {
-      await relayer.functionCall({ contractId: r.token, methodName: 'storage_deposit',
-        args: { account_id: r.to, registration_only: true }, gas: 30_000_000_000_000n, attachedDeposit: utils.format.parseNearAmount('0.00125') });
-    } catch (_) { /* already registered */ }
     const out = await relayer.signAndSendTransaction({ receiverId: sd.delegateAction.senderId, actions: [transactions.signedDelegate(sd)] });
     const failed = [out.status, ...out.receipts_outcome.map((o) => o.outcome.status)].some((s) => s && s.Failure);
     Object.assign(r, { status: failed ? 'failed' : 'paid', paidAt: Date.now(), txHash: out.transaction.hash });

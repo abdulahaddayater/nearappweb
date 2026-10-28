@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
       if (!validateAccountId(to)) return send(res, 400, { error: 'invalid receiver account' });
       const n = Number(amount);
       if (!(n > 0) || n > cfg.maxAmount) return send(res, 400, { error: `amount must be between 0 and ${cfg.maxAmount}` });
-      const r = { v: 1, id: store.newId(), to, amount: String(amount), units: toUnits(amount), token: cfg.token.contract,
+      const r = { v: 1, id: store.newId(), to, amount: String(amount), units: toUnits(amount), token: 'near',
         symbol: cfg.token.symbol, status: 'pending', createdAt: Date.now(), expiresAt: Date.now() + cfg.requestTtlMs };
       await store.put(r);
       const base = `https://${req.headers['x-forwarded-host'] || req.headers.host}`;
