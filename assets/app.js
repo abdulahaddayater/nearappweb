@@ -45,8 +45,8 @@
   });
 
   // tap simulation
-  const stage = $('#stage'), outer = $('#stageOuter'), H = 520; let W = 700;
-  const fit = () => { W = stage.offsetWidth || 700; const s = Math.min(1, outer.clientWidth / W); stage.style.transform = 'scale(' + s + ')'; outer.style.height = (H * s) + 'px'; };
+  const stage = $('#stage'), outer = $('#stageOuter'), W = 700, H = 520;
+  const fit = () => { const s = Math.min(1, outer.clientWidth / W); stage.style.transform = 'scale(' + s + ')'; outer.style.height = (H * s) + 'px'; };
   fit(); addEventListener('resize', fit);
   const seq = [['idle', 1500], ['approach', 1400], ['tap', 1500], ['auth', 1500], ['send', 1300], ['done', 3200], ['leave', 1200]];
   const tl = $$('#timeline span'); let run = 0, started = false;
