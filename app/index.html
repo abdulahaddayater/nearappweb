@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TapPay</title>
+<meta name="theme-color" content="#00EC97">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/assets/tappay.css">
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/"><img src="/assets/favicon.svg" alt="">TapPay</a><span class="pill" id="net">testnet</span></header>
+
+<!-- Sign in (NEAR Auth) -->
+<div class="phone" id="s-signin">
+  <h2>Sign in</h2>
+  <p class="small">Through NEAR Auth. No seed phrase — your NEAR account is created for you.</p>
+  <div class="row" style="flex-direction:column">
+    <button class="btn" data-provider="google">Continue with Google</button>
+    <button class="btn" data-provider="apple">Continue with Apple</button>
+    <input class="f" id="email" type="email" placeholder="you@example.com">
+    <button class="btn alt" data-provider="email">Continue with email</button>
+    <button class="btn g" data-provider="passkey">Use a passkey</button>
+    <input class="f" id="username" placeholder="Pick a username (test account)" autocomplete="username">
+    <button class="btn g" data-provider="username" id="create-test">Create test account</button>
+  </div>
+  <p class="small" id="auth-note"></p>
+</div>
+
+<!-- Home -->
+<div class="phone hidden" id="s-home">
+  <p class="small">Signed in as <b id="who"></b> · <a href="#" id="signout">sign out</a></p>
+  <div class="row"><button class="btn g" id="go-receive">Receive</button><button class="btn" id="go-pay">Pay</button></div>
+  <p class="small">Receive: type an amount and let the sender tap. Pay: hold your phone near theirs, or scan their QR.</p>
+</div>
+
+<!-- Receiver -->
+<div class="phone hidden" id="s-receive">
+  <p class="small">Amount (USDC)</p>
+  <input class="amt" id="amount" inputmode="decimal" placeholder="0.00" autocomplete="off">
+  <div class="row"><button class="btn g" id="make-req">Request payment</button><button class="btn alt" data-home>Cancel</button></div>
+  <div id="req-out" class="hidden">
+    <div class="status" id="r-status">Waiting for payment…</div>
+    <div class="qr"><img id="qr" alt="Payment request QR"></div>
+    <p class="small" id="r-hint">Ask the sender to hold their phone near yours, or scan this QR (iPhone ↔ iPhone).</p>
+    <p class="small" id="r-meta"></p>
+  </div>
+</div>
+
+<!-- Sender -->
+<div class="phone hidden" id="s-pay">
+  <div id="p-scan">
+    <p class="status">Hold near the receiver</p>
+    <video id="cam" playsinline muted style="width:100%;border-radius:16px" class="hidden"></video>
+    <div class="row"><button class="btn" id="scan-qr">Scan QR</button><button class="btn alt" id="scan-nfc">Read NFC</button><button class="btn alt" data-home>Cancel</button></div>
+    <input class="f" id="paste" placeholder="…or paste a TapPay link">
+    <p class="small" id="p-note"></p>
+  </div>
+  <div id="p-confirm" class="hidden">
+    <p class="small">Pay</p>
+    <div class="amt" id="c-amount"></div>
+    <p class="small">to <b id="c-to"></b> · USDC (test) · request <code id="c-id"></code></p>
+    <p class="small">Network fee: <b>paid by TapPay</b></p>
+    <div class="row"><button class="btn g" id="confirm">Confirm with Face ID / fingerprint</button></div>
+  </div>
+  <div class="status hidden" id="p-status"></div>
+</div>
+
+<p class="small" id="demo-banner"></p>
+</div>
+<script type="module" src="/app/app.js"></script>
+</body>
+</html>
