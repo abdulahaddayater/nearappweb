@@ -79,3 +79,14 @@ Without relayer / NEAR Auth env vars the app runs in **demo mode**: sign-in crea
 
 ## Deploy
 Vercel → import repo → framework "Other", no build command. Set the env vars above. `api/*.js` deploy as serverless functions.
+
+## Android: run TapPay (Halo APK is deprecated)
+
+The old **Halo APK is deprecated** — its source isn't available, and its "scan this QR with your phone" signup step doesn't work. Use the TapPay PWA:
+
+1. Start the Android emulator (e.g. `emulator -avd Pixel_8_API_34`) or use a real Android phone.
+2. Open **Chrome** and go to https://nearappweb.vercel.app/app/ (local dev from the emulator: `npm run dev`, then `http://10.0.2.2:8099/app/`).
+3. Chrome menu ⋮ → **Add to Home screen** / **Install app**. It launches as "TapPay".
+4. Type a username → **Create test account**. The account is created in-app (demo mode, no NEAR Auth env needed) — no second-phone QR.
+
+QR codes are only used for payment requests; they encode `https://<app origin>/app/#pay?...` links, so scanning one with a phone camera opens TapPay and continues to the confirm screen (after sign-in if needed).

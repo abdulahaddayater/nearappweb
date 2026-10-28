@@ -27,7 +27,7 @@ async function makeRequest() {
   const amount = $('amount').value.trim();
   try {
     const r = await api('/api/requests', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ to: session().accountId, amount }) });
-    $('qr').src = await QRCode.toDataURL(r.uri, { margin: 1, width: 480 });
+    $('qr').src = await QRCode.toDataURL(r.uri = location.origin + '/app/' + r.uri.slice(r.uri.indexOf('#')), { margin: 1, width: 480 });
     $('r-meta').textContent = `Request ${r.id} · one-time · expires in ${Math.round((r.expiresAt - Date.now()) / 60000)} min`;
     $('req-out').classList.remove('hidden'); $('make-req').disabled = true;
     // Android Chrome: also offer the request over Web NFC (writes to a tag/sticker). Phone-to-phone
@@ -88,14 +88,21 @@ async function scanNfc() {
   r.onreading = (ev) => { for (const rec of ev.message.records) if (rec.recordType === 'url' || rec.recordType === 'text') openRequest(parseLink(new TextDecoder().decode(rec.data))); };
 }
 
+// After sign-in, continue any payment link that opened the app (QR/NFC), otherwise go home.
+function resume() {
+  const p = sessionStorage.getItem('tappay-pending'); sessionStorage.removeItem('tappay-pending');
+  const l = p && parseLink(p);
+  if (l) { history.replaceState(null, '', '/app/'); openRequest(l); } else home();
+}
+
 // ---------- Wiring ----------
 (async () => {
   cfg = await api('/api/config').catch(() => ({ network: 'testnet', demoMode: true }));
   $('net').textContent = cfg.network;
   if (cfg.demoMode) $('demo-banner').textContent = 'Demo mode: no relayer / NEAR Auth configured — payments are simulated. See README.';
-  completeRedirect();
+  const redirected = completeRedirect();
   document.querySelectorAll('[data-provider]').forEach((b) => b.onclick = async () => {
-    try { if (await signIn(b.dataset.provider, cfg, { email: $('email').value.trim() })) home(); } catch (e) { $('auth-note').textContent = e.message; }
+    try { if (await signIn(b.dataset.provider, cfg, { email: $('email').value.trim(), username: $('username').value.trim() })) resume(); } catch (e) { $('auth-note').textContent = e.message; }
   });
   document.querySelectorAll('[data-home]').forEach((b) => b.onclick = () => { clearInterval(poll); home(); });
   $('signout').onclick = (e) => { e.preventDefault(); signOut(); home(); };
@@ -105,6 +112,7 @@ async function scanNfc() {
   $('scan-qr').onclick = () => scanQr().catch((e) => $('p-note').textContent = e.message);
   $('scan-nfc').onclick = () => scanNfc().catch((e) => $('p-note').textContent = e.message);
   $('paste').onchange = () => openRequest(parseLink($('paste').value));
+  if (redirected) return resume();
   const link = parseLink(location.href);
   if (link) { if (!session()) { show('s-signin'); $('auth-note').textContent = 'Sign in to pay this request.'; sessionStorage.setItem('tappay-pending', location.href); } else openRequest(link); }
   else home();
