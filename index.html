@@ -59,7 +59,7 @@
       <svg class="moon"><use href="#i-moon"/></svg>
       <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
     </button>
-    <a class="btn primary sm" href="/app/"><svg><use href="#i-nfc"/></svg>Open TapPay</a>
+    <a class="btn primary sm" href="/downloads/tappay.apk" download="tappay.apk"><svg><use href="#i-down"/></svg>Download APK</a>
   </div>
 </header>
 
@@ -72,13 +72,14 @@
       <h1 class="reveal" style="--d:.05s">Tap phones.<br><em>USDC lands.</em></h1>
       <p class="lead reveal" style="--d:.12s">The receiver types an amount. The sender holds their phone near, confirms with Face ID or fingerprint, and both screens say <b>Paid</b> within seconds. No gas, no seed phrase — the chain stays out of sight.</p>
       <div class="cta reveal" style="--d:.2s">
-        <a class="btn primary" href="/app/"><svg><use href="#i-nfc"/></svg>Try TapPay</a>
+        <a class="btn primary" href="/downloads/tappay.apk" download="tappay.apk"><svg><use href="#i-down"/></svg>Try TapPay <span style="opacity:.6;font-weight:500">APK · 6.97 MB</span></a>
+        <a class="btn ghost" href="/app/">Open web app</a>
         <a class="btn ghost" href="#demo">Watch a tap</a>
       </div>
       <div class="dlmeta reveal" style="--d:.28s">
-        <span><i></i>USDC (test)</span>
-        <span><i></i>Gasless via relayer</span>
-        <span><i></i>NEAR Auth sign-in</span>
+        <span><i></i>Android APK · 6.97 MB</span>
+        <span><i></i>Android 10+ · arm64</span>
+        <span><i></i>USDC (test) · gasless</span>
         <span><i></i>Testnet only</span>
       </div>
     </div>
@@ -315,11 +316,12 @@
   <div class="wrap">
     <div class="dl-card reveal">
       <div>
-        <span class="eyebrow">Try it</span>
-        <h2>Open TapPay<br><em>on two phones.</em></h2>
-        <a class="btn primary" href="/app/" style="margin-top:8px"><svg><use href="#i-nfc"/></svg>Open TapPay</a>
+        <span class="eyebrow">Download</span>
+        <h2>Get TapPay<br><em>on two phones.</em></h2>
+        <a class="btn primary" href="/downloads/tappay.apk" download="tappay.apk" style="margin-top:8px"><svg><use href="#i-down"/></svg>Try TapPay · Download APK</a>
+        <a class="btn ghost" href="/app/" style="margin-top:8px">Open web app</a>
         <ol class="install">
-          <li><span>Open <code class="mono">/app/</code> in your phone's browser (optionally Add to Home screen).</span></li>
+          <li><span>Download <code class="mono">tappay.apk</code> on an Android phone and allow <b>Install unknown apps</b> — or open <a href="/app/">/app/</a> in any phone browser (iPhone too).</span></li>
           <li><span>Sign in with Google, Apple, email or passkey via NEAR Auth.</span></li>
           <li><span>Receiver types an amount; sender taps (NFC) or scans the QR.</span></li>
           <li><span>Confirm with Face ID / fingerprint — both screens show <b>Paid</b>.</span></li>
@@ -332,7 +334,8 @@
         <div><span>Gas</span><b>Paid by relayer</b></div>
         <div><span>Sign-in</span><b>NEAR Auth</b></div>
         <div><span>Confirm</span><b>Face ID / fingerprint / passkey</b></div>
-        <div><span>App</span><b class="mono" style="font-size:13px">/app/ (PWA)</b></div>
+        <div><span>Android APK</span><b>6.97 MB · arm64 · Android 10+</b></div>
+        <div><span>Web app</span><b class="mono" style="font-size:13px">/app/ (PWA)</b></div>
       </div>
     </div>
     <div class="honest reveal" id="limits"><svg><use href="#i-info"/></svg><div><b>Honest note: prototype, testnet only.</b>TapPay is not a licensed payment product: no KYC, no cash in or out. The app must be open on both phones, every tap pair needs one Android phone with NFC, and each payment opens a short NEAR Auth approval. NEAR Auth on mainnet needs whitelisting and NEAR Intents has no testnet.</div></div>
@@ -350,7 +353,7 @@
       <details><summary>Do I need a seed phrase?</summary><p>No. Sign in with Google, Apple, email or a passkey through NEAR Auth — your NEAR account is created for you.</p></details>
       <details><summary>Does it work on iPhone?</summary><p>Yes. iPhone ↔ Android uses NFC with the Android phone as the tapped side. iPhone ↔ iPhone uses the QR fallback.</p></details>
       <details><summary>Do I need two phones?</summary><p>To try a tap, yes. The QR is an https link, so the sender can also scan it with any camera.</p></details>
-      <details><summary>Do I need to install an APK?</summary><p>No. TapPay is a web app at <a href="/app/">/app/</a> — open it in your browser or add it to your Home screen. The old Halo APK is deprecated.</p></details>
+      <details><summary>Is there an Android app?</summary><p>Yes — download the Android APK (6.97 MB, Android 10+, arm64, testnet) <a href="/downloads/tappay.apk" download="tappay.apk">right here</a>. It is the existing Android build restored for download, debug-signed and not audited. The TapPay web app (PWA) at <a href="/app/">/app/</a> works in any phone browser, including iPhone.</p></details>
       <details><summary>Can I get paid on another chain?</summary><p>That's a stretch goal via NEAR Intents (Base, Arbitrum, Solana). Not shipped — Intents is mainnet only.</p></details>
     </div>
   </div>
@@ -363,7 +366,7 @@
       <div><a class="brand" href="#top" style="padding:0"><img src="/assets/favicon.svg" alt="" width="24" height="24" style="border-radius:6px">TapPay</a><p>Tap phones, pay in USDC. Built on <a href="https://near.org" rel="noopener" style="display:inline;text-decoration:underline;text-decoration-color:var(--g)">NEAR Protocol</a>.</p></div>
       <div><h4>Product</h4><a href="#demo">Live tap</a><a href="#passkeys">Sign in</a><a href="#features">Features</a><a href="#screens">Screens</a></div>
       <div><h4>Learn</h4><a href="#how">How it works</a><a href="#security">Security</a><a href="#compat">Devices</a><a href="#faq">FAQ</a></div>
-      <div><h4>Try it</h4><a href="/app/">Open TapPay</a><a href="https://github.com/abdulahaddayater/nearappweb" rel="noopener">GitHub</a><a href="https://testnet.nearblocks.io" rel="noopener">NearBlocks testnet</a></div>
+      <div><h4>Try it</h4><a href="/downloads/tappay.apk" download="tappay.apk">Download APK</a><a href="/app/">Web app</a><a href="https://github.com/abdulahaddayater/nearappweb" rel="noopener">GitHub</a><a href="https://testnet.nearblocks.io" rel="noopener">NearBlocks testnet</a></div>
     </div>
     <div class="legal"><span>© 2026 TapPay · testnet prototype, not a licensed payment product.</span><span>Powered by NEAR · NFC is a trademark of its respective owner</span></div>
   </div>
