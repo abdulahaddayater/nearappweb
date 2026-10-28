@@ -13,7 +13,7 @@ Fresh TapPay build (Nov 1–14) reusing the tap-to-pay idea, not the old Halo co
 
 ## What's in this repo
 ```
-index.html                 landing page
+index.html                 landing page (interactive tap demo; uses assets/style.css + assets/app.js)
 app/                       TapPay web app / PWA (receiver + sender flows, QR, Web NFC, biometric confirm)
   app.js  auth.js          flows; NEAR Auth adapter + WebAuthn biometric confirm + delegate signing hook
 api/requests.js            POST create one-time payment request · GET status (pending → settling → paid)
