@@ -6,7 +6,7 @@ const call = (m, p, b) => new Promise((ok, no) => { const r = http.request({ por
 (async () => {
   await new Promise((r) => setTimeout(r, 300));
   const c = await call('POST', '/api/requests', { to: 'alice.testnet', amount: '2.50' });
-  if (c.code !== 201 || c.j.units !== '2500000' || !c.j.uri.includes('#pay?')) throw new Error('create failed ' + JSON.stringify(c));
+  if (c.code !== 201 || c.j.units !== '2500000000000000000000000' || c.j.symbol !== 'NEAR' || c.j.uri.includes('tok=') || !c.j.uri.includes('#pay?')) throw new Error('create failed ' + JSON.stringify(c));
   const p = await call('POST', '/api/relay', { id: c.j.id, sender: 'bob.testnet', signedDelegate: null });
   if (p.j.status !== 'paid') throw new Error('relay failed ' + JSON.stringify(p));
   const g = await call('GET', `/api/requests?id=${c.j.id}`);

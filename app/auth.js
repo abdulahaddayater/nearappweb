@@ -46,7 +46,7 @@ export function completeRedirect() {
   return s;
 }
 
-// --- Biometric confirm (Face ID / fingerprint) via WebAuthn user verification ---
+// --- Biometric confirm (fingerprint / face unlock) via WebAuthn user verification ---
 const CRED = 'tappay-cred';
 const rnd = (n) => crypto.getRandomValues(new Uint8Array(n));
 const b64 = (b) => btoa(String.fromCharCode(...new Uint8Array(b)));
@@ -70,12 +70,11 @@ export async function confirmWithBiometrics() {
   return true;
 }
 
-// Produce a base64 SignedDelegate (NEP-366) for ft_transfer. Real signing comes from the NEAR Auth session.
+// Produce a base64 SignedDelegate (NEP-366) for a native NEAR transfer. Real signing comes from the NEAR Auth session.
 export async function signTransferDelegate(s, req) {
   if (s.demo) return null; // demo: server is in simulation mode
   if (!window.nearAuth || !window.nearAuth.signDelegate)
     throw new Error('NEAR Auth signer not loaded — see README "NEAR Auth integration"');
-  return window.nearAuth.signDelegate({ session: s.token, receiverId: req.token, actions: [{
-    type: 'FunctionCall', methodName: 'ft_transfer', deposit: '1', gas: '30000000000000',
-    args: { receiver_id: req.to, amount: req.units, memo: `tappay:${req.id}` } }] });
+  return window.nearAuth.signDelegate({ session: s.token, receiverId: req.to, actions: [{
+    type: 'Transfer', deposit: req.units }] });
 }
