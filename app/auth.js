@@ -10,8 +10,9 @@ export const signOut = () => localStorage.removeItem(KEY);
 
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 24) || 'user';
 
-export async function signIn(provider, cfg, { email } = {}) {
-  if (cfg.nearAuth && cfg.nearAuth.url && cfg.nearAuth.clientId) {
+export async function signIn(provider, cfg, { email, username } = {}) {
+  // Test accounts are always created locally, in-app — never a second-phone QR handoff.
+  if (provider !== 'username' && cfg.nearAuth && cfg.nearAuth.url && cfg.nearAuth.clientId) {
     const u = new URL('/authorize', cfg.nearAuth.url);
     u.search = new URLSearchParams({ client_id: cfg.nearAuth.clientId, provider, login_hint: email || '',
       network: cfg.network, redirect_uri: location.origin + '/app/#auth' });
@@ -22,6 +23,9 @@ export async function signIn(provider, cfg, { email } = {}) {
   if (provider === 'passkey') {
     await createPasskey('tappay-user');
     name = 'passkey-' + Math.random().toString(36).slice(2, 7);
+  } else if (provider === 'username') {
+    if (!username || !username.trim()) throw new Error('Enter a username');
+    name = slug(username);
   } else if (provider === 'email') {
     if (!email || !email.includes('@')) throw new Error('Enter your email');
     name = slug(email.split('@')[0]);
