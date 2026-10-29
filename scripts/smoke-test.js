@@ -15,5 +15,21 @@ const call = (m, p, b) => new Promise((ok, no) => { const r = http.request({ por
   if (replay.code !== 409) throw new Error('replay not rejected');
   const bad = await call('POST', '/api/requests', { to: 'Bad Account', amount: '1' });
   if (bad.code !== 400) throw new Error('validation missing');
+  // Real-path guards (no network): delegate validation + demo-mode switch.
+  const { checkDelegate } = require('../api/relay');
+  const r0 = { to: 'alice.testnet', units: '2500000000000000000000000' };
+  const sd = (o = {}) => ({ delegateAction: { senderId: 'bob.testnet', receiverId: 'alice.testnet', maxBlockHeight: 200n,
+    actions: [{ transfer: { deposit: BigInt(r0.units) } }], ...o } });
+  checkDelegate(sd(), r0, 'bob.testnet', 100);
+  for (const [bad, h] of [[sd({ receiverId: 'eve.testnet' }), 100], [sd({ actions: [{ transfer: { deposit: 1n } }] }), 100],
+    [sd({ maxBlockHeight: 50n }), 100], [sd({ actions: [] }), 100]]) {
+    let threw = false; try { checkDelegate(bad, r0, 'bob.testnet', h); } catch (_) { threw = true; }
+    if (!threw) throw new Error('bad delegate accepted');
+  }
+  const cfg = require('../lib/config'); const env = process.env; delete env.TAPPAY_DEMO_MODE;
+  Object.assign(cfg.relayer, { accountId: 'relayer.testnet', privateKey: 'ed25519:x' });
+  if (!cfg.demoMode) throw new Error('should stay demo without NEAR Auth');
+  Object.assign(cfg.nearAuth, { url: 'https://auth.example', clientId: 'c' });
+  if (cfg.demoMode) throw new Error('should be real with relayer + NEAR Auth');
   console.log('smoke test OK'); process.exit(0);
 })().catch((e) => { console.error(e); process.exit(1); });

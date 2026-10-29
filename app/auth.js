@@ -70,11 +70,23 @@ export async function confirmWithBiometrics() {
   return true;
 }
 
+// Load the NEAR Auth browser SDK (NEAR_AUTH_SDK_URL, default <NEAR_AUTH_URL>/sdk.js) when configured.
+// It must expose window.nearAuth.signDelegate({ session, receiverId, actions, network }) -> base64 borsh SignedDelegate.
+export function loadNearAuthSdk(cfg) {
+  const a = cfg.nearAuth || {}; const src = a.sdkUrl || (a.url && new URL('/sdk.js', a.url).toString());
+  if (!src || window.nearAuth) return Promise.resolve();
+  return new Promise((ok, no) => { const el = document.createElement('script'); el.src = src; el.async = true;
+    el.onload = ok; el.onerror = () => no(new Error('could not load ' + src)); document.head.appendChild(el); });
+}
+
 // Produce a base64 SignedDelegate (NEP-366) for a native NEAR transfer. Real signing comes from the NEAR Auth session.
 export async function signTransferDelegate(s, req) {
   if (s.demo) return null; // demo: server is in simulation mode
   if (!window.nearAuth || !window.nearAuth.signDelegate)
     throw new Error('NEAR Auth signer not loaded — see README "NEAR Auth integration"');
-  return window.nearAuth.signDelegate({ session: s.token, receiverId: req.to, actions: [{
-    type: 'Transfer', deposit: req.units }] });
+  const out = await window.nearAuth.signDelegate({ session: s.token, network: req.network, receiverId: req.to,
+    actions: [{ type: 'Transfer', deposit: req.units }] });
+  const b64sd = typeof out === 'string' ? out : out && (out.signedDelegate || out.signedDelegateBase64);
+  if (!b64sd) throw new Error('NEAR Auth did not return a SignedDelegate');
+  return b64sd;
 }

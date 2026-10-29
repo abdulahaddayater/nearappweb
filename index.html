@@ -72,11 +72,11 @@
       <h1 class="reveal" style="--d:.05s">Tap phones.<br><em>NEAR lands.</em></h1>
       <p class="lead reveal" style="--d:.12s">The receiver types an amount in NEAR. The sender holds their Android phone near, confirms with fingerprint or face unlock, and both screens say <b>Paid</b> within seconds. No gas, no seed phrase — the chain stays out of sight.</p>
       <div class="cta reveal" style="--d:.2s">
-        <a class="btn primary" href="/downloads/tappay.apk" download="tappay.apk"><svg><use href="#i-down"/></svg>Try TapPay <span style="opacity:.6;font-weight:500">APK · 6.97 MB</span></a>
+        <a class="btn primary" href="/downloads/tappay.apk" download="tappay.apk"><svg><use href="#i-down"/></svg>Try TapPay <span style="opacity:.6;font-weight:500">APK · 21 KB</span></a>
         <a class="btn ghost" href="#demo">Watch a tap</a>
       </div>
       <div class="dlmeta reveal" style="--d:.28s">
-        <span><i></i>Android APK · 6.97 MB</span>
+        <span><i></i>Android APK · 21 KB</span>
         <span><i></i>Android 10+ · arm64</span>
         <span><i></i>Pay in NEAR · gasless</span>
         <span><i></i>No iPhone yet</span>
@@ -220,7 +220,7 @@
       <article class="fc reveal"><div class="ic"><svg><use href="#i-qr"/></svg></div><h3>QR that just works</h3><p>Every request is also a QR with an https link — the Android fallback when NFC is off or missing.</p></article>
       <article class="fc reveal" style="--d:.05s"><div class="ic"><svg><use href="#i-shield"/></svg></div><h3>One-time requests</h3><p>Each request carries a one-time ID, so a tap pays exactly what was asked, once.</p></article>
       <article class="fc reveal" style="--d:.1s"><div class="ic"><svg><use href="#i-list"/></svg></div><h3>Live Paid status</h3><p>Both screens flip to <b>Paid</b> as soon as the transfer lands, with a NearBlocks link.</p></article>
-      <article class="fc w reveal"><div class="ic"><svg><use href="#i-send"/></svg></div><h3>Installable web app</h3><p>TapPay is a PWA at <code>/app/</code> — open it in your phone's browser or add it to the Home screen. No APK sideloading.</p><div class="tags"><span>PWA</span><span>Add to Home screen</span><span>Light &amp; dark</span></div></article>
+      <article class="fc w reveal"><div class="ic"><svg><use href="#i-send"/></svg></div><h3>Android app</h3><p>Install the TapPay APK. The receiver's phone carries the payment request over NFC; holding the sender's phone near it opens the payment to confirm.</p><div class="tags"><span>APK</span><span>NFC HCE</span><span>Light &amp; dark</span></div></article>
       <article class="fc reveal"><div class="ic"><svg><use href="#i-wave"/></svg></div><h3>Haptics &amp; motion</h3><p>Pulsing NFC rings, a buzz on tap and a self-drawing check when the NEAR lands.</p></article>
     </div>
   </div>
@@ -333,8 +333,8 @@
         <div><span>Gas</span><b>Paid by relayer</b></div>
         <div><span>Sign-in</span><b>NEAR Auth</b></div>
         <div><span>Confirm</span><b>fingerprint / face unlock / passkey</b></div>
-        <div><span>Android APK</span><b>6.97 MB · arm64 · Android 10+</b></div>
-        <div><span>Web app</span><b class="mono" style="font-size:13px">/app/ (PWA)</b></div>
+        <div><span>Android APK</span><b>21 KB · Android 10+ · NFC tap (HCE)</b></div>
+        <div><span>Web app</span><b class="mono" style="font-size:13px">/app/ (inside the APK)</b></div>
       </div>
     </div>
     <div class="honest reveal" id="limits"><svg><use href="#i-info"/></svg><div><b>Honest note: prototype, testnet only.</b>TapPay is not a licensed payment product: no KYC, no cash in or out. The app must be open on both phones, both phones must be Android (iPhone is not supported yet), and each payment opens a short NEAR Auth approval. NEAR Auth on mainnet needs whitelisting.</div></div>
@@ -352,7 +352,7 @@
       <details><summary>Do I need a seed phrase?</summary><p>No. Sign in with Google, Apple, email or a passkey through NEAR Auth — your NEAR account is created for you.</p></details>
       <details><summary>Does it work on iPhone?</summary><p>No — iPhone is not supported right now. TapPay currently works on Android phones only (Android 10+ with NFC).</p></details>
       <details><summary>Do I need two phones?</summary><p>To try a tap, yes: two Android phones with TapPay. If NFC is off or missing, the receiver can show a QR and the sender scans it.</p></details>
-      <details><summary>Is there an Android app?</summary><p>Yes — download the Android APK (6.97 MB, Android 10+, arm64, testnet) <a href="/downloads/tappay.apk" download="tappay.apk">right here</a>. It is the existing Android build restored for download, debug-signed and not audited. iPhone is not supported yet.</p></details>
+      <details><summary>Is there an Android app?</summary><p>Yes — download the Android APK (21 KB, Android 10+, testnet) <a href="/downloads/tappay.apk" download="tappay.apk">right here</a>. It is the new TapPay Android app (<code>com.tappay.near</code>): the receiver phone sends the payment request over NFC and the sender phone opens it to confirm. Debug-signed prototype, not audited. iPhone is not supported yet.</p></details>
       <details><summary>Which tokens can I pay with?</summary><p>Only NEAR. TapPay is a NEAR-only app: every payment is a native NEAR transfer on NEAR testnet.</p></details>
     </div>
   </div>

@@ -18,8 +18,11 @@ async function relayerAccount() {
 
 // Only relay a delegate that pays exactly this request: one native NEAR Transfer to the receiver for the amount.
 // (The one-time request ID is enforced server-side: a request can only be relayed once.)
-function checkDelegate(sd, r, sender) {
+function checkDelegate(sd, r, sender, blockHeight) {
   const da = sd.delegateAction;
+  if (!sender || typeof sender !== 'string') throw new Error('sender required');
+  if (da.senderId === r.to) throw new Error('cannot pay yourself');
+  if (blockHeight != null && BigInt(da.maxBlockHeight.toString()) <= BigInt(blockHeight)) throw new Error('delegate expired (maxBlockHeight)');
   if (da.senderId !== sender) throw new Error('sender mismatch');
   if (da.receiverId !== r.to) throw new Error('wrong receiver');
   if (da.actions.length !== 1 || !da.actions[0].transfer) throw new Error('only a single NEAR transfer is allowed');
@@ -52,9 +55,11 @@ module.exports = async (req, res) => {
     }
 
     const { transactions } = require('near-api-js');
+    if (!signedDelegate || typeof signedDelegate !== 'string') throw new Error('signedDelegate (base64) required — sign in with NEAR Auth');
     const sd = decodeSignedDelegate(signedDelegate);
-    checkDelegate(sd, r, sender);
     const relayer = await relayerAccount();
+    const head = await relayer.connection.provider.block({ finality: 'final' });
+    checkDelegate(sd, r, sender, head.header.height);
     const out = await relayer.signAndSendTransaction({ receiverId: sd.delegateAction.senderId, actions: [transactions.signedDelegate(sd)] });
     const failed = [out.status, ...out.receipts_outcome.map((o) => o.outcome.status)].some((s) => s && s.Failure);
     Object.assign(r, { status: failed ? 'failed' : 'paid', paidAt: Date.now(), txHash: out.transaction.hash });

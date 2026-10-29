@@ -1,5 +1,5 @@
 import QRCode from 'https://esm.sh/qrcode@1.5.4';
-import { session, signIn, signOut, completeRedirect, confirmWithBiometrics, signTransferDelegate } from './auth.js';
+import { session, signIn, signOut, completeRedirect, confirmWithBiometrics, signTransferDelegate, loadNearAuthSdk } from './auth.js';
 
 const $ = (id) => document.getElementById(id);
 const screens = ['s-signin', 's-home', 's-receive', 's-pay'];
@@ -30,10 +30,13 @@ async function makeRequest() {
     $('qr').src = await QRCode.toDataURL(r.uri = location.origin + '/app/' + r.uri.slice(r.uri.indexOf('#')), { margin: 1, width: 480 });
     $('r-meta').textContent = `Request ${r.id} · one-time · expires in ${Math.round((r.expiresAt - Date.now()) / 60000)} min`;
     $('req-out').classList.remove('hidden'); $('make-req').disabled = true;
+    // TapPay Android app: hand the request to the HCE service so a phone-to-phone tap carries it.
+    if (window.TapPayAndroid) { window.TapPayAndroid.setRequest(r.uri); $('r-hint').textContent += ' Hold the other Android phone near this one.'; }
     // Android Chrome: also offer the request over Web NFC (writes to a tag/sticker). Phone-to-phone
     // tap needs the native Android HCE client — see README.
     if ('NDEFReader' in window) $('r-hint').textContent += ' Web NFC available: tap a TapPay sticker to write this request.';
     poller(r.id, (u) => {
+      if (u.status !== 'pending' && window.TapPayAndroid) window.TapPayAndroid.clearRequest();
       if (u.status === 'paid') $('r-status').innerHTML = paidHtml(u), $('qr').classList.add('hidden');
       else if (u.status === 'settling') $('r-status').textContent = 'Payment landing…';
       else if (u.status !== 'pending') $('r-status').textContent = `Request ${u.status}`;
@@ -60,6 +63,7 @@ async function pay(r) {
   const st = $('p-status'); st.classList.remove('hidden');
   try {
     $('confirm').disabled = true; st.textContent = 'Confirm with fingerprint / face unlock…';
+    if (!cfg.demoMode && session().demo) throw new Error('Real payments are on — sign out and sign in with NEAR Auth');
     await confirmWithBiometrics();
     st.textContent = 'Approving with NEAR Auth…';
     const signedDelegate = await signTransferDelegate(session(), r);
@@ -98,6 +102,7 @@ function resume() {
 // ---------- Wiring ----------
 (async () => {
   cfg = await api('/api/config').catch(() => ({ network: 'testnet', demoMode: true }));
+  await loadNearAuthSdk(cfg).catch((e) => console.warn('NEAR Auth SDK:', e.message));
   $('net').textContent = cfg.network;
   if (cfg.demoMode) $('demo-banner').textContent = 'Demo mode: no relayer / NEAR Auth configured — payments are simulated. See README.';
   const redirected = completeRedirect();

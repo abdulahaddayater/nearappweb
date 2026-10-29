@@ -1,0 +1,4 @@
+<resources>
+  <string name="app_name">TapPay</string>
+  <string name="hce_desc">TapPay payment request (NEAR)</string>
+</resources>

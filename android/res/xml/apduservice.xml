@@ -1,0 +1,7 @@
+<host-apdu-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/hce_desc" android:requireDeviceUnlock="false">
+  <!-- NFC Forum Type 4 Tag NDEF application: any Android phone reads the payment-request URI -->
+  <aid-group android:description="@string/hce_desc" android:category="other">
+    <aid-filter android:name="D2760000850101" />
+  </aid-group>
+</host-apdu-service>

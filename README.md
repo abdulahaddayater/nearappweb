@@ -8,9 +8,9 @@ near it, confirms with fingerprint or face unlock, and the NEAR lands. Both scre
 - **Sign in with Google, Apple, email or a passkey through NEAR Auth** — no seed phrase.
 - **NEAR only** — no USDC, USDT or other tokens.
 - **Android only right now** — Android ↔ Android by NFC, with a QR fallback. **iPhone is not supported.**
-- Android APK download: `downloads/tappay.apk` (existing Android build restored for download; installed UI may still say Halo).
+- Android APK download: `downloads/tappay.apk` — TapPay Android app (`com.tappay.near`), built from `android/`.
 
-Fresh TapPay build (Nov 1–14) reusing the tap-to-pay idea, not the old Halo code. Testnet prototype.
+Fresh TapPay build (Nov 1–14) reusing the tap-to-pay idea, not old code. Testnet prototype.
 
 ## What's in this repo
 ```
@@ -23,7 +23,8 @@ api/config.js              public client config (network, NEAR, demo mode)
 lib/                       config (testnet defaults), request model, store (memory or KV)
 scripts/dev-server.js      local server for static + /api
 scripts/smoke-test.js      end-to-end demo-mode test
-.well-known/assetlinks.json  Digital Asset Links for the TapPay Android app (passkeys) — fill in fingerprint
+.well-known/assetlinks.json  Digital Asset Links for com.tappay.near (App Links + passkeys)
+android/                   TapPay Android app: WebView host + NFC HCE payment-request tag (build.sh → downloads/tappay.apk)
 ```
 
 ### Payment request (the only thing on the tap / QR)
@@ -53,15 +54,32 @@ Without relayer / NEAR Auth env vars the app runs in **demo mode**: sign-in crea
 ## Environment variables (see `.env.example`)
 | Var | Purpose |
 |---|---|
-| `RELAYER_ACCOUNT_ID`, `RELAYER_PRIVATE_KEY` | Funded testnet account that pays gas + storage. Server-only. Enables real settlement. |
-| `NEAR_AUTH_URL`, `NEAR_AUTH_CLIENT_ID` | NEAR Auth hosted sign-in (Google / Apple / email / passkey). |
+| `RELAYER_ACCOUNT_ID`, `RELAYER_PRIVATE_KEY` | Funded testnet account that submits every payment and pays gas. Server-only. |
+| `NEAR_AUTH_URL`, `NEAR_AUTH_CLIENT_ID` | NEAR Auth hosted sign-in (Google / Apple / email / passkey) issued for this app. |
+| `NEAR_AUTH_SDK_URL` | Optional: NEAR Auth browser SDK script (default `<NEAR_AUTH_URL>/sdk.js`). |
 | `NEAR_NETWORK`, `NEAR_RPC_URL`, `NEAR_EXPLORER` | Testnet defaults. |
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Vercel KV / Upstash for request state (needed on Vercel — memory store isn't shared across instances). |
+| `TAPPAY_DEMO_MODE=1` | Force simulation even when everything is configured. |
 
-## Integration points still needing external setup
-- **NEAR Auth:** `app/auth.js` redirects to `NEAR_AUTH_URL/authorize` and reads `#auth?account_id=…&session=…` on return; real signing expects `window.nearAuth.signDelegate(...)` returning a base64 `SignedDelegate`. Confirm against the NEAR Auth SDK you're issued and adjust these two spots.
-- **Native NFC (Android HCE):** browsers can't do phone-to-phone NFC card emulation. The TapPay Android app (package `com.tappay.near`) should emulate an NDEF tag (HCE) whose single URI record is the payment-request link above, and on the reading side open it in the same sender flow. Web NFC in Android Chrome can read/write NFC stickers only.
-- **Relayer account:** create + fund a testnet account; get test NEAR for senders from the testnet faucet.
+**Real mode turns on only when all four of `RELAYER_ACCOUNT_ID`, `RELAYER_PRIVATE_KEY`, `NEAR_AUTH_URL`, `NEAR_AUTH_CLIENT_ID` are set** (and `TAPPAY_DEMO_MODE` is not `1`). Otherwise everything stays in demo mode. `/api/config` reports `demoMode`.
+
+## Real settlement setup (testnet)
+1. **Relayer:** create a testnet account (e.g. `npx near-cli-rs account create-account sponsor-by-faucet-service tappay-relayer.testnet autogenerate-new-keypair save-to-keychain network-config testnet create`), fund it from the testnet faucet, and copy its full-access key `ed25519:...` into `RELAYER_PRIVATE_KEY` (Vercel env only — never commit it).
+2. **NEAR Auth:** register the app with NEAR Auth, set redirect URI `https://nearappweb.vercel.app/app/#auth`, and put the issued URL + client ID in `NEAR_AUTH_URL` / `NEAR_AUTH_CLIENT_ID`. Mainnet needs NEAR Auth whitelisting; testnet is the demo.
+3. **KV:** add Vercel KV / Upstash so request state survives across serverless instances.
+4. Redeploy. The demo banner disappears; demo profiles are blocked from paying, so users sign in with NEAR Auth.
+
+How a real payment settles:
+- `app/auth.js` redirects to `NEAR_AUTH_URL/authorize`, reads `#auth?account_id=…&session=…` on return, loads the NEAR Auth SDK and calls `window.nearAuth.signDelegate({ session, network, receiverId, actions: [{ type: 'Transfer', deposit }] })`, which must return a base64 borsh NEP-366 `SignedDelegate` (string or `{ signedDelegate }`). If the SDK you're issued uses a different name/shape, adapt only `signTransferDelegate` / `loadNearAuthSdk`.
+- `api/relay.js` decodes the `SignedDelegate`, requires sender match, exactly one native `Transfer` to the request's receiver for the exact yoctoNEAR amount, no self-pay, and an unexpired `maxBlockHeight`; then the relayer wraps it in a transaction (`signedDelegate` action) and pays gas. The one-time ID can settle once (`409` on replay). The chain verifies the sender's signature and nonce.
+
+**Verify the real path:** set the four env vars, sign in on two Android phones, request 0.1 NEAR, tap, confirm. The Paid screen links a NearBlocks testnet tx whose signer is the relayer and whose inner action is a `Delegate` → `Transfer` from the sender. `npm test` covers the demo path plus the delegate validation rules and the demo/real switch (no network).
+
+## Android app (`android/`)
+- Package `com.tappay.near`, label **TapPay**, Android 10+.
+- Hosts `https://nearappweb.vercel.app/app/` in a WebView. On **Receive**, the web app calls `TapPayAndroid.setRequest(uri)` and `PaymentRequestHceService` emulates an NFC Forum Type 4 tag (AID `D2760000850101`) with one NDEF URI record: the payment-request link.
+- The sender's phone reads that NDEF link (system dispatch or foreground dispatch with TapPay open) and opens it in the sender confirm flow. QR links open the same way (App Link).
+- Build: JDK 17 + Android SDK (`platforms;android-34`, `build-tools;34.0.0`), then `android/build.sh` → `downloads/tappay.apk`. It creates a debug keystore at `~/.tappay/tappay-debug.jks` if none exists and prints its SHA-256; put that into `.well-known/assetlinks.json`. Get it any time with `keytool -list -v -keystore ~/.tappay/tappay-debug.jks -storepass android -alias tappay`. The committed APK is debug-signed (prototype).
 
 ## Limitations
 - **iPhone is not supported right now.** Both phones must be Android.
@@ -77,13 +95,7 @@ Without relayer / NEAR Auth env vars the app runs in **demo mode**: sign-in crea
 ## Deploy
 Vercel → import repo → framework "Other", no build command. Set the env vars above. `api/*.js` deploy as serverless functions.
 
-## Android: run TapPay (Halo APK is deprecated)
-
-The old **Halo APK is deprecated** — its source isn't available, and its "scan this QR with your phone" signup step doesn't work. Use the TapPay PWA:
-
-1. Start the Android emulator (e.g. `emulator -avd Pixel_8_API_34`) or use a real Android phone.
-2. Open **Chrome** and go to https://nearappweb.vercel.app/app/ (local dev from the emulator: `npm run dev`, then `http://10.0.2.2:8099/app/`).
-3. Chrome menu ⋮ → **Add to Home screen** / **Install app**. It launches as "TapPay".
-4. Type a username → **Create test account**. The account is created in-app (demo mode, no NEAR Auth env needed) — no second-phone QR.
-
-QR codes are only used for payment requests; they encode `https://<app origin>/app/#pay?...` links, so scanning one with a phone camera opens TapPay and continues to the confirm screen (after sign-in if needed).
+## Android: run TapPay
+1. Download `tappay.apk` from the landing page on an Android phone (allow **Install unknown apps**) — or `adb install downloads/tappay.apk`.
+2. Turn on NFC. Open TapPay on both phones and sign in (demo mode: type a username → **Create test account**).
+3. Receiver: **Receive** → amount → **Request payment**. Sender: hold the phone near the receiver's, confirm, and both screens show **Paid**. QR is the fallback.
