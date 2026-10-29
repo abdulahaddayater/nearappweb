@@ -36,4 +36,4 @@ scripts/update-apk.sh /path/to/new/halo.apk 1.0.1-hackathon   # version arg opti
 git add -A && git commit -m "Halo 1.0.1" && git push            # Vercel redeploys
 ```
 The script copies the file to `downloads/halo.apk` and rewrites the version, size and SHA-256 shown on the page
-from the actual file. Replace the placeholder GitHub link in `index.html` (search `YOUR-USERNAME`).
+from the actual file. Replace the placeholder GitHub link in `index.html` (already set to abdulahaddayater/nearappweb).

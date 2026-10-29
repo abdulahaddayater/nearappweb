@@ -75,7 +75,7 @@
         <a class="btn ghost" href="#demo">Watch a tap</a>
       </div>
       <div class="dlmeta reveal" style="--d:.28s">
-        <span><i></i>v<span data-rel="version">1.0.1-hackathon</span></span>
+        <span><i></i>v<span data-rel="version">1.0.2-hackathon</span></span>
         <span><i></i>Android 10+ · arm64</span>
         <span><i></i>NFC + screen lock</span>
         <span><i></i>Testnet only</span>
@@ -379,12 +379,12 @@
         <div class="reqs"><span>Android 10+</span><span>NFC (HCE)</span><span>Screen lock set</span><span>arm64</span><span>Testnet only</span></div>
       </div>
       <div class="spec" aria-label="APK details">
-        <div><span>Version</span><b data-rel="version">1.0.1-hackathon</b></div>
+        <div><span>Version</span><b data-rel="version">1.0.2-hackathon</b></div>
         <div><span>Package</span><b class="mono" style="font-size:13px">com.halopay.near</b></div>
-        <div><span>Size</span><b><span data-rel="size_mb_label">6.98 MB</span> <small style="color:var(--muted);font-weight:400">(<span data-rel="size_bytes">6,984,888</span> bytes)</small></b></div>
+        <div><span>Size</span><b><span data-rel="size_mb_label">6.98 MB</span> <small style="color:var(--muted);font-weight:400">(<span data-rel="size_bytes">6,984,892</span> bytes)</small></b></div>
         <div><span>Architecture</span><b>arm64-v8a</b></div>
         <div><span>Min Android</span><b>10 (API 29)</b></div>
-        <div style="flex-direction:column;gap:8px"><span>SHA-256 <button class="copy" id="copyHash">Copy</button></span><b class="hash" data-rel="sha256" id="hash">b1f969bed654996a60447001293954a1264047ebbfbaa760b712b78c25892162</b></div>
+        <div style="flex-direction:column;gap:8px"><span>SHA-256 <button class="copy" id="copyHash">Copy</button></span><b class="hash" data-rel="sha256" id="hash">7fea4e11d6ae5114ca57ad2e35277a29e8891de4d93448e3085e7da223845eb9</b></div>
       </div>
     </div>
     <div class="honest reveal"><svg><use href="#i-info"/></svg><div><b>Honest note: hackathon build, testnet only.</b>Halo runs on NEAR testnet and holds no real value. It is a debug-signed APK that has not been security-audited, and Play Store distribution isn't set up. Verify the SHA-256 above after downloading.</div></div>
@@ -405,7 +405,7 @@
       <details><summary>Can someone replay a payment request?</summary><p>Requests carry a random nonce and a 5-minute expiry, and the payer confirms each one. With the optional session contract, the same nonce can never be paid twice. Merchant stickers are intentionally reusable.</p></details>
       <details><summary>Does it work with tokens?</summary><p>Yes: native NEAR, and NEP-141 tokens such as test USDC. Token payments through the session contract need the contract and the receiver to be registered with that token.</p></details>
       <details><summary>Why can't I install it from the Play Store?</summary><p>It's a hackathon build distributed as an APK. Sideload it by allowing unknown sources for the app you open it with.</p></details>
-      <details><summary>Is the code open?</summary><p>The repository link is coming soon — see the footer.</p></details>
+      <details><summary>Is the code open?</summary><p>Yes — the landing site is at <a href="https://github.com/abdulahaddayater/nearappweb">github.com/abdulahaddayater/nearappweb</a>.</p></details>
     </div>
   </div>
 </section>
@@ -417,7 +417,7 @@
       <div><a class="brand" href="#top" style="padding:0"><span class="mark"></span>Halo</a><p>Tap phones, pay in NEAR. A non-custodial NFC wallet built on <a href="https://near.org" rel="noopener" style="display:inline;text-decoration:underline;text-decoration-color:var(--g)">NEAR Protocol</a> for the NEAR hackathon.</p></div>
       <div><h4>Product</h4><a href="#demo">Live tap</a><a href="#passkeys">Passkeys</a><a href="#features">Features</a><a href="#screens">Screens</a></div>
       <div><h4>Learn</h4><a href="#security">Security</a><a href="#contract">Contract</a><a href="#compat">Compatibility</a><a href="#faq">FAQ</a></div>
-      <div><h4>Get it</h4><a href="downloads/halo.apk" download="halo.apk">Download APK</a><a href="https://github.com/YOUR-USERNAME/halo" data-placeholder="github" rel="noopener">GitHub (repo link coming soon)</a><a href="https://near-faucet.io/" rel="noopener">Testnet faucet</a><a href="https://testnet.nearblocks.io" rel="noopener">NearBlocks testnet</a></div>
+      <div><h4>Get it</h4><a href="downloads/halo.apk" download="halo.apk">Download APK</a><a href="https://github.com/abdulahaddayater/nearappweb" rel="noopener">GitHub</a><a href="https://near-faucet.io/" rel="noopener">Testnet faucet</a><a href="https://testnet.nearblocks.io" rel="noopener">NearBlocks testnet</a></div>
     </div>
     <div class="legal"><span>© 2026 Halo · testnet only, not audited, no real funds.</span><span>Powered by NEAR · NFC is a trademark of its respective owner</span></div>
   </div>
