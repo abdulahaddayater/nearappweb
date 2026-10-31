@@ -233,62 +233,18 @@
   <div class="wrap">
     <span class="eyebrow reveal">Inside the app</span>
     <h2 class="reveal">Quiet by design.</h2>
-    <p class="lead reveal">Sample screens drawn for this page, not captured data.</p>
+    <p class="lead reveal">Real screens captured from the NearTap app on testnet.</p>
   </div>
   <div class="gal-scroll" id="gal">
-    <figure class="gal-item"><div class="phone"><div class="screen dk">
-      <div class="s-top"><span class="s-mark"></span><span class="s-chip">alice.testnet ⚿</span></div>
-      <div class="s-lab">Balance · testnet</div><div class="s-bal">24.5<small>NEAR</small></div>
-      <div class="s-orb"><div><svg><use href="#i-nfc"/></svg>Tap to pay</div></div>
-      <div class="s-row3"><div class="s-q"><i></i>Receive</div><div class="s-q"><i></i>Send</div><div class="s-q"><i></i>Merchant</div></div>
-      <div style="margin-top:8px"><div class="s-tx"><span class="av in">↙</span><div>cafe.testnet<small>Received</small></div><b class="g">+0.5</b></div><div class="s-tx"><span class="av">↗</span><div>bob.testnet<small>Sent</small></div><b>−1.2</b></div></div>
-    </div></div><figcaption><b>Home</b>Balance and the tap orb</figcaption></figure>
-
-    <figure class="gal-item"><div class="phone"><div class="screen">
-      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Pay</b></div>
-      <div class="s-lab s-center">Payment request</div><div class="s-av">C</div><div class="s-center" style="font-weight:550">cafe.testnet</div>
-      <div class="s-spacer"></div><div class="s-big">0.5 <small>NEAR</small></div><div class="s-center s-mut" style="margin-top:6px;font-size:10px">NEAR testnet · expires in 4 min</div><div class="s-spacer"></div>
-      <div style="display:flex;gap:6px"><div class="s-btn ol" style="flex:1">Cancel</div><div class="s-btn gr" style="flex:1.4">Confirm</div></div>
-    </div></div><figcaption><b>Confirm</b>Receiver, amount, expiry</figcaption></figure>
-
-    <figure class="gal-item"><div class="phone"><div class="screen">
-      <div class="s-top"><span class="s-mark"></span></div><div class="s-spacer"></div>
-      <div class="s-center"><svg class="s-check go" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30"/><path d="M22 36l9 9 17-19"/></svg><div class="s-lab" style="margin-top:14px">Paid</div><div class="s-big" style="margin-top:4px">0.5</div><div class="s-mut" style="margin-top:4px">to cafe.testnet</div></div>
-      <div class="s-spacer"></div><div class="s-btn ol" style="margin-bottom:6px">View on NearBlocks</div><div class="s-btn">Done</div>
-    </div></div><figcaption><b>Receipt</b>With explorer link</figcaption></figure>
-
-    <figure class="gal-item"><div class="phone"><div class="screen dk">
-      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Receive</b></div>
-      <div class="s-center"><div class="s-big" style="font-size:24px">1 <small>NEAR</small></div><div class="s-mut" style="margin-top:3px">to alice.testnet</div></div>
-      <div class="s-qr" data-qr></div>
-      <div class="s-center s-mut">Payer scans this with NearTap</div><div class="s-spacer"></div>
-      <div style="display:flex;gap:6px"><div class="s-btn ol" style="flex:1">Cancel</div><div class="s-btn" style="flex:1">Use NFC</div></div>
-    </div></div><figcaption><b>Receive</b>NFC with QR fallback</figcaption></figure>
-
-    <figure class="gal-item"><div class="phone"><div class="screen">
-      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Connect account</b></div>
-      <div class="s-seg"><span>Secret key</span><span>Seed</span><span class="on">Passkey</span></div>
-      <div class="s-mut" style="font-size:10px;margin-bottom:8px">Prove ownership once. NearTap adds a new device key on-chain and guards it with your passkey.</div>
-      <div class="s-in"><small>Account id (optional)</small>alice.testnet</div>
-      <div class="s-in" style="min-height:54px"><small>Secret key or seed phrase</small>••••••••••••••••</div>
-      <div class="s-spacer"></div><div class="s-btn gr">Link passkey</div>
-    </div></div><figcaption><b>Passkey linking</b>The differentiator</figcaption></figure>
-
-    <figure class="gal-item"><div class="phone"><div class="screen">
-      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Accounts</b></div>
-      <div class="s-acc"><span class="d on"></span><div>alice.testnet<small>Passkey-protected</small></div>⚿</div>
-      <div class="s-acc"><span class="d"></span><div>bob.testnet<small>Seed phrase</small></div>⚿</div>
-      <div class="s-acc"><span class="d"></span><div>shop.testnet<small>Secret key</small></div>⚿</div>
-      <div class="s-spacer"></div><div class="s-btn gr" style="margin-bottom:6px">Create new</div><div class="s-btn ol">Connect existing</div>
-    </div></div><figcaption><b>Accounts</b>Multi-account, remove anytime</figcaption></figure>
-
-    <figure class="gal-item"><div class="phone"><div class="screen dk">
-      <div class="s-top"><span class="s-mark"></span><b style="font-size:12px">Merchant tag</b></div>
-      <div class="s-center s-mut" style="font-size:10px">Write a reusable pay-me sticker. Leave the amount empty to let customers type it.</div>
-      <div class="s-spacer"></div>
-      <div class="s-tag"><div class="st"></div><b style="font-size:12px">Hold an NFC sticker to the back of the phone…</b></div>
-      <div class="s-spacer"></div><div class="s-btn gr">Write tag</div>
-    </div></div><figcaption><b>Merchant</b>Write NFC stickers</figcaption></figure>
+    <figure class="gal-item"><div class="phone"><div class="screen shot"><img src="assets/screens/home-light.png" alt="NearTap Home screen" loading="lazy" decoding="async"></div></div><figcaption><b>Home</b>Balance and the tap orb</figcaption></figure>
+    <figure class="gal-item"><div class="phone"><div class="screen shot"><img src="assets/screens/home-dark.png" alt="NearTap Home · dark screen" loading="lazy" decoding="async"></div></div><figcaption><b>Home · dark</b>True black for OLED</figcaption></figure>
+    <figure class="gal-item"><div class="phone"><div class="screen shot"><img src="assets/screens/pay.png" alt="NearTap Pay screen" loading="lazy" decoding="async"></div></div><figcaption><b>Pay</b>Hold near the other phone</figcaption></figure>
+    <figure class="gal-item"><div class="phone"><div class="screen shot"><img src="assets/screens/scan.png" alt="NearTap Scan to pay screen" loading="lazy" decoding="async"></div></div><figcaption><b>Scan to pay</b>QR fallback, NearTap-styled</figcaption></figure>
+    <figure class="gal-item"><div class="phone"><div class="screen shot"><img src="assets/screens/receive.png" alt="NearTap Receive screen" loading="lazy" decoding="async"></div></div><figcaption><b>Receive</b>Keypad, NEAR or test USDC</figcaption></figure>
+    <figure class="gal-item"><div class="phone"><div class="screen shot"><img src="assets/screens/receive-dark.png" alt="NearTap Receive · dark screen" loading="lazy" decoding="async"></div></div><figcaption><b>Receive · dark</b>Same flow, black theme</figcaption></figure>
+    <figure class="gal-item"><div class="phone"><div class="screen shot"><img src="assets/screens/history.png" alt="NearTap Activity screen" loading="lazy" decoding="async"></div></div><figcaption><b>Activity</b>On-device + NearBlocks</figcaption></figure>
+    <figure class="gal-item"><div class="phone"><div class="screen shot"><img src="assets/screens/settings.png" alt="NearTap Settings screen" loading="lazy" decoding="async"></div></div><figcaption><b>Settings</b>Theme, lock, relayer, contract</figcaption></figure>
+    <figure class="gal-item"><div class="phone"><div class="screen shot"><img src="assets/screens/lock.png" alt="NearTap Lock on open screen" loading="lazy" decoding="async"></div></div><figcaption><b>Lock on open</b>Face, fingerprint or PIN</figcaption></figure>
   </div>
 </section>
 
