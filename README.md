@@ -37,3 +37,12 @@ git add -A && git commit -m "Halo 1.0.1" && git push            # Vercel redeplo
 ```
 The script copies the file to `downloads/halo.apk` and rewrites the version, size and SHA-256 shown on the page
 from the actual file. Replace the placeholder GitHub link in `index.html` (already set to abdulahaddayater/nearappweb).
+
+## NearTap 1.3.1: scanner fix (patched APK)
+The app source isn't in this repo, so 1.3.1 is built by patching the 1.3.0 APK:
+`android-patch/scanner-fix/build.sh <neartap-1.3.0.apk> downloads/halo.apk`, then `scripts/update-apk.sh downloads/halo.apk 1.3.1-hackathon`.
+
+- **Pay opens the QR scanner straight away** when the phone can't tap (no NFC, or NFC turned off). Phones with NFC on still get *Hold near the other phone* with **Scan QR instead**.
+- **"Allow camera" works after a denial.** Before, once the camera had been denied, Android stopped showing the permission dialog and the button did nothing, so the scanner never appeared. Now it opens NearTap's system settings, and coming back with the camera allowed starts the scanner.
+- Signed with a new debug key (SHA-256 `8D:85:8F:E9:…:23:4F`, added to `assetlinks.json` next to the old one). Updating from 1.3.0 needs an uninstall first: back up the account key in Settings before that.
+- Same fix belongs in the Kotlin source (`PayScreen` scanner state and the camera-permission button) when you next build from source.

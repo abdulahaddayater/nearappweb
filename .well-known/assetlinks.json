@@ -1,8 +1,16 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls", "delegate_permission/common.get_login_creds"],
+[
+ {
+  "relation": [
+   "delegate_permission/common.handle_all_urls",
+   "delegate_permission/common.get_login_creds"
+  ],
   "target": {
-    "namespace": "android_app",
-    "package_name": "com.halopay.near",
-    "sha256_cert_fingerprints": ["A8:93:A0:03:6B:60:7C:A0:B6:2F:F4:23:7B:3B:19:53:05:6E:61:1B:9E:32:CB:C6:43:81:E4:69:B0:9B:67:20"]
+   "namespace": "android_app",
+   "package_name": "com.halopay.near",
+   "sha256_cert_fingerprints": [
+    "A8:93:A0:03:6B:60:7C:A0:B6:2F:F4:23:7B:3B:19:53:05:6E:61:1B:9E:32:CB:C6:43:81:E4:69:B0:9B:67:20",
+    "8D:85:8F:E9:F1:5C:92:86:9D:49:F0:EC:1C:C9:B3:B5:E9:DE:52:F3:94:28:AD:B8:06:53:5E:F1:F2:38:23:4F"
+   ]
   }
-}]
+ }
+]
