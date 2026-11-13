@@ -67,8 +67,8 @@ Current release: **1.3.2-hackathon** (version, size and SHA-256 are listed on th
 
 ## Tech stack
 
-- **Android app** – Kotlin, Jetpack Compose, Android HCE + NFC reader mode, CameraX + ML Kit barcode
-  scanning, Android Keystore + BiometricPrompt.
+- **Android app** – Kotlin, Jetpack Compose, Android HCE + NFC reader mode, ZXing (journeyapps) QR
+  scanner, Android Keystore + BiometricPrompt.
 - **NEAR** – testnet JSON-RPC, ed25519 signing on device, NEP-366 meta-transactions for the optional
   relayer, optional Rust `near-sdk` session contract.
 - **Site** – static HTML/CSS/JS on Vercel (`index.html`, `assets/`, `downloads/`, `.well-known/assetlinks.json`).
